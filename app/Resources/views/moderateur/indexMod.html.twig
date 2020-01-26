@@ -1,0 +1,322 @@
+{% extends "base2.html.twig" %}
+
+
+{% block sidebar %}
+    <div id="wrapper">
+        <div id="sidebar-nav" class="sidebar">
+            <div class="sidebar-scroll">
+                <nav>
+                    <ul class="nav">
+                        <li><a href="{{ path('moderateur_page') }}" class=""><i class="lnr lnr-home"></i> <span>Profil</span></a></li>
+                        <li><a href="{{ path('demande_addmission_mod') }}" class=""><i class="lnr lnr-envelope"></i> <span>Demandes d'addmission</span></a></li>
+
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block body %}
+
+    <!-- WRAPPER -->
+    <div id="wrapper">
+        <!-- NAVBAR -->
+
+        <!-- END NAVBAR -->
+        <!-- LEFT SIDEBAR -->
+
+        <!-- END LEFT SIDEBAR -->
+        <!-- MAIN -->
+        <div class="main">
+            <!-- MAIN CONTENT -->
+            <div class="main-content">
+                {% if app.session.flashBag.has('modiferreur') %}
+
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <i class="fa fa-times-circle"></i> {% for msg in app.session.flashBag.get('modiferreur') %}
+                            {{ msg }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% if app.session.flashBag.has('modifsucces') %}
+
+                    <div class="alert alert-success alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <i class="fa fa-check-circle"></i> {% for msg in app.session.flashBag.get('modifsucces') %}
+                            {{ msg }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <div class="container-fluid">
+                    <div class="panel panel-profile">
+                        <div class="clearfix">
+                            <!-- LEFT COLUMN -->
+                            <div class="profile-center">
+
+                                <!-- PROFILE HEADER -->
+                                <div class="profile-header">
+                                    <div class="overlay"></div>
+                                    <div class="profile-main">
+
+                                        <img src="{{ asset('template/img/img'~ app.user.id ~'.jpeg') }}" onerror="this.onerror=null;this.src='{{ asset('template/img/avatar-default.png') }}';" class="img-circle" alt="Avatar">
+                                        <h3 class="name">{{ user.nom }} {{ user.prenom }}</h3>
+                                        <span class="online-status status-available">Actif</span>
+                                    </div>
+
+                                </div>
+                                <!-- END PROFILE HEADER -->
+                                <!-- PROFILE DETAIL -->
+                                <div class="profile-detail">
+                                    <div class="profile-info">
+                                        <h4 class="heading">Informations basique</h4>
+                                        <ul class="list-unstyled list-justify">
+                                            <li>Nom <span>{{ user.nom}}</span></li>
+                                            <li>Prenom <span>{{ user.prenom }}</span></li>
+                                            <li>Email <span>{{ user.email }}</span></li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="profile-info">
+                                        <h4 class="heading">A propos</h4>
+                                        <p>Crée de facon interactive d'excellents renseignements aprés une impartition distinctive.</p>
+                                    </div>
+
+                                    <div class="text-center"><button type="button" id="buttonAjout" onclick="affiche();" class="btn btn-primary"> Modifier Profil </button></div>
+
+                                    <form method="post" action="{{ path('modifier_profil_moderateur') }}" enctype="multipart/form-data">
+
+                                        <input type="hidden" value="modifierAdmin" name="redirection">
+                                        <div id="ajoutersAdmin">
+
+                                        </div>
+
+
+
+
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- END PROFILE DETAIL -->
+                        </div>
+                        <!-- END LEFT COLUMN -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END MAIN CONTENT -->
+    </div>
+    <!-- END MAIN -->
+    <script src="{{ asset('jquery-3.2.1.min.js') }}"></script>
+
+    <script>
+
+
+
+        function affiche()
+        {
+
+            $("#ajouter").hide(0);
+            $("#buttonAjout").attr("disabled", true);
+
+            var infouser= {{ tableauinfo|json_encode|raw }};
+
+
+
+            /* photo de profil */
+
+            var divFormGroup6=document.createElement('div');
+
+            divFormGroup6.classList.add('custom-file');
+
+            var label6=document.createElement('label');
+            label6.setAttribute('for',"#photo");
+            label6.setAttribute('class','control-label');
+            label6.innerHTML="Photo de profil";
+
+            var input6 = document.createElement('input');
+            input6.setAttribute('type',"file");
+            //input1.setAttribute('class','form-control');
+            input6.classList.add('form-control','input-lg','custom-file-input');
+            input6.setAttribute('id',"#photo");
+            input6.setAttribute('name',"photo");
+            input6.setAttribute('accept',".jpg, .jpeg, .png");
+            divFormGroup6.appendChild(label6);
+            divFormGroup6.appendChild(input6);
+
+
+
+
+
+            /* Mail ....*/
+            var divFormGroup1=document.createElement('div');
+
+            divFormGroup1.classList.add('form-group');
+
+            var label1=document.createElement('label');
+            label1.setAttribute('for',"#email");
+            label1.setAttribute('class','control-label');
+            label1.innerHTML="Email";
+
+            var input1 = document.createElement('input');
+            input1.setAttribute('type',"email");
+            //input1.setAttribute('class','form-control');
+            input1.classList.add('form-control','input-lg');
+            input1.setAttribute('id',"#email");
+            input1.setAttribute('value',infouser[3]);
+            input1.setAttribute('name',"email");
+            input1.setAttribute('required',"required" );
+            divFormGroup1.appendChild(label1);
+            divFormGroup1.appendChild(input1);
+
+            /*Mot de passe */
+
+            var divFormGroup2=document.createElement('div');
+
+            divFormGroup2.classList.add('form-group');
+
+            var label2=document.createElement('label');
+            label2.setAttribute('for',"#mdp");
+            label2.setAttribute('class','control-label');
+            label2.innerHTML="Mot de passe";
+
+            var input2 = document.createElement('input');
+            input2.setAttribute('type',"password");
+            // input2.setAttribute('class','form-control');
+            input2.classList.add('form-control','input-lg');
+            input2.setAttribute('id',"#mdp");
+            input2.setAttribute('value',infouser[4]);
+            input2.setAttribute('name',"mdp");
+            input2.setAttribute('required',"required" );
+
+            divFormGroup2.appendChild(label2);
+            divFormGroup2.appendChild(input2);
+
+            /*pseudo  */
+
+            var divFormGroup3=document.createElement('div');
+
+            divFormGroup3.classList.add('form-group');
+
+            var label3=document.createElement('label');
+            label3.setAttribute('for',"#pseudo");
+            label3.setAttribute('class','control-label');
+            label3.innerHTML="Pseudo";
+
+            var input3 = document.createElement('input');
+            input3.setAttribute('type',"text");
+            // input2.setAttribute('class','form-control');
+            input3.classList.add('form-control','input-lg');
+            input3.setAttribute('id',"#pseudo");
+            input3.setAttribute('value',infouser[2]);
+            input3.setAttribute('name',"pseudo");
+            input3.setAttribute('required',"required" );
+
+            divFormGroup3.appendChild(label3);
+            divFormGroup3.appendChild(input3);
+
+            /* NOM */
+            var divFormGroup4=document.createElement('div');
+
+            divFormGroup4.classList.add('form-group');
+
+            var label4=document.createElement('label');
+            label4.setAttribute('for',"#nom");
+            label4.setAttribute('class','control-label');
+            label4.innerHTML="Nom";
+
+            var input4 = document.createElement('input');
+            input4.setAttribute('type',"text");
+            // input2.setAttribute('class','form-control');
+            input4.classList.add('form-control','input-lg');
+            input4.setAttribute('id',"#nom");
+            input4.setAttribute('value',infouser[0]);
+            input4.setAttribute('name',"nom");
+            input4.setAttribute('required',"required" );
+
+            divFormGroup4.appendChild(label4);
+            divFormGroup4.appendChild(input4);
+
+            /*Prenom */
+
+            var divFormGroup5=document.createElement('div');
+
+            divFormGroup5.classList.add('form-group');
+
+            var label5=document.createElement('label');
+            label5.setAttribute('for',"#prenom");
+            label5.setAttribute('class','control-label');
+            label5.innerHTML="Prénom";
+
+            var input5 = document.createElement('input');
+            input5.setAttribute('type',"text");
+            // input2.setAttribute('class','form-control');
+            input5.classList.add('form-control','input-lg');
+            input5.setAttribute('id',"#prenom");
+            input5.setAttribute('value',infouser[1]);
+            input5.setAttribute('name',"prenom");
+            input5.setAttribute('required',"required" );
+
+            divFormGroup5.appendChild(label5);
+            divFormGroup5.appendChild(input5);
+
+            var divButton = document.createElement('div');
+            divButton.classList.add('row');
+
+            var divPos1 = document.createElement('div');
+            divPos1.classList.add('col-md-2');
+
+            var submit = document.createElement('button');
+            submit.setAttribute('type','submit');
+            submit.classList.add('btn','btn-primary');
+            submit.setAttribute('name',"buttonModifier");
+            submit.setAttribute('value' , 'modifier');
+            submit.innerHTML="Modifier";
+
+            divPos1.appendChild(submit);
+
+
+            var divPos2 = document.createElement('div');
+            divPos2.classList.add('col-md-2');
+
+            var annuler = document.createElement('button');
+            annuler.setAttribute('type','submit');
+            annuler.classList.add('btn','btn-danger');
+            annuler.setAttribute('name',"annuler");
+            annuler.setAttribute('value',"annuler");
+            annuler.innerHTML="Annuler";
+
+            divPos2.appendChild(annuler);
+
+            divButton.appendChild(divPos1);
+            divButton.appendChild(divPos2);
+
+            document.getElementById("ajoutersAdmin").appendChild(divFormGroup1);
+            document.getElementById("ajoutersAdmin").appendChild(divFormGroup2);
+            document.getElementById("ajoutersAdmin").appendChild(divFormGroup3);
+            document.getElementById("ajoutersAdmin").appendChild(divFormGroup4);
+            document.getElementById("ajoutersAdmin").appendChild(divFormGroup5);
+            document.getElementById("ajoutersAdmin").appendChild(divFormGroup6);
+            document.getElementById("ajoutersAdmin").appendChild(divButton);
+
+
+
+            $("#ajouter").show(5);
+            // body...
+        }
+
+
+
+    </script>
+    <div class="clearfix"></div>
+    <footer>
+        <div class="container-fluid">
+            <p class="copyright">&copy; 2017 <a href="https://www.themeineed.com" target="_blank">Theme I Need</a>. All Rights Reserved.</p>
+        </div>
+    </footer>
+    </div>
+{% endblock %}

@@ -1,0 +1,545 @@
+{% extends "base2.html.twig" %}
+
+{% block sidebar %}
+
+
+    <div id="wrapper">
+        <div id="sidebar-nav" class="sidebar">
+            <div class="sidebar-scroll">
+                <nav>
+                    <ul class="nav">
+                        <li><a href="{{ path('client_page') }}" class=""><i class="lnr lnr-home"></i> <span>Tableau de bord</span></a></li>
+                        <li><a href="{{ path('client_offres') }}" class=""><i class="lnr lnr-list"></i> <span>Offres d’emploi/stages/ alternance</span></a></li>
+                        <li><a href="{{ path('client_actualite') }}" class=""><i class="lnr lnr-layers"></i> <span>Actualité de Prev’Risk</span></a></li>
+                        <li>
+                            <a href="#subPages" data-toggle="collapse" class="collapsed active"><i class="lnr lnr-file-empty"></i> <span>Profil</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+                            <div id="subPages" class="collapse ">
+                                <ul class="nav">
+                                    <li><a href="{{ path('client_profil') }}" class="">Mon Profil</a></li>
+                                    <li><a href="{{ path('client_mesOffre') }}" class="active">Mes offres</a></li>
+                                    <li><a href="{{ path('client_mesActualite') }}" class="">Mes actualités</a></li>
+                                </ul>
+                            </div>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block body %}
+
+    {% if app.session.flashBag.has('success') %}
+
+        <div class="alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <i class="fa fa-check-circle"></i> {% for msg in app.session.flashBag.get('success') %}
+                {{ msg }}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+
+
+    <div class="main">
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <div class="container-fluid">
+                <!-- OVERVIEW -->
+                <div class="panel panel-headline">
+                    <div class="panel-heading">
+                        <div class="panel panel-headline">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Mes offres</h3>
+                                <p class="panel-subtitle"></p>
+                            </div>
+                            <div class="panel-body">
+                                <h4>Explication</h4>
+                                <p>Dans cette rubrique vous trouverez les différents offres que vous avez postulé et vous serez capable de les gérer (supprimer , modifier ) . Vous pourrez aussi ajouter des nouveaux offres</p>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Mes offres</h3>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Poste</th>
+                                <th>Type</th>
+                                <th>Societé</th>
+                                <th>Lieux</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for u in offres%}
+                                <tr id="tr{{ u.id }}">
+                                    <td class="id">{{ u.id }}</td>
+                                    <td class="poste">{{ u.poste }}</td>
+                                    <td class="type">{{ u.type }}</td>
+                                    <td class="societe">{{ u.societe}}</td>
+                                    <td>{{ u.lieux}}</td>
+
+
+                                        <td><button type="submit" class="btn btn-danger btn-sm btnSelect"  name="{{ u.id }}" value="supp"><i class="fa fa-trash-o"></i> Supprimer</button></td>
+                                        <td><button type="submit" id="mod{{ u.id }}"  class="btn btn-primary btn-sm modifier"  name="{{ u.id }}" value="mod"><i class="fa fa-refresh"></i> Modifier</button></td>
+
+                                        <input id="poste{{ u.id }}" type="hidden" value="{{ u.poste }}"/>
+                                        <input id="societe{{ u.id }}" type="hidden" value="{{ u.societe }}"/>
+                                        <input id="lieux{{ u.id }}" type="hidden" value="{{ u.lieux }}">
+                                        <input id="mission{{ u.id }}" type="hidden" value="{{ u.mission }}"/>
+                                        <input id="profil{{ u.id }}" type="hidden" value="{{ u.profil }}"/>
+                                        <input id="datedeb{{ u.id }}" type="hidden" value="{{ u.dateDeb|date("d/m/Y") }}"/>
+                                        <input id="dateexpr{{ u.id }}" type="hidden" value="{{ u.dateExpiration|date("d/m/Y") }}"/>
+                                        <input id="datepub{{ u.id }}" type="hidden" value="{{ u.dateDeb|date("d/m/Y") }}">
+                                        <input id="nbVue{{ u.id }}" type="hidden" value="{{ u.nbvue }}"/>
+
+
+
+                                 <div id="{{ u.id }}" class="des{{ u.id }}">
+
+                                 </div>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="panel-footer">
+
+                        <!-- Trigger the modal with a button -->
+                        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" onclick="viderErreur();">Ajouter un offre</button>
+
+                        <!-- Modal -->
+                        <div id="myModal" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Formlaire de l'ajout</h4>
+                                    </div>
+                                    <div class="modal-body">
+
+
+                                            <div class="row">
+                                                                                    <div class="col-md-4">   <h4>Entreprise :</h4> <input type="text" id="entreprisev" name="entreprise" placeholder="Entreprise" required="required" class="form-control input-lg"/> <div id="erreurEnt"> </div>  </div>
+                                                                                    <div class="col-md-4"> <h4>Type : </h4> <select class="form-control type" id="typev" > <option value="vide"></option>
+                                                        <option value="CDI">CDI</option>
+                                                        <option value="CDD">CDD</option>
+                                                        <option value="Alternance">Alternance</option>
+                                                        <option value="Stage">Stage</option> </select>  <div id="erreurType"> </div></div>
+                                                                                    <div class="col-md-4"> <h4>Date début : </h4> <input type="date" id="datedebv" name="entreprise"
+                                                                                                    required="required" class="form-control input-lg"/> <div id="erreurDate"> </div> </div>
+                                                                                </div>
+                                                                        <div class="row">  <div class="col-md-6"> <h4>Poste :</h4> <input type="text" id="postev" name="entreprise"
+                                                                                                 placeholder="Poste" required="required" class="form-control input-lg"/>  <div id="erreurPoste"> </div></div>  <div class="col-md-6"> <h4>Lieux :</h4> <input type="text" id="lieuxv" placeholder="Lieux" required="required" class="form-control input-lg"/>
+                                                                                  <div id="erreurlieux"> </div>  </div>  <br> <br>
+                                                                                <br>
+                                                                                <br>
+                                                                                <h4>Mission :</h4> <textarea class="form-control" name="mission" id="missionv" placeholder="Mission" aria-placeholder="Mission" rows="5"></textarea> <div id="erreurMission"> </div>
+                                                                                <br>
+                                                                                <h4>Profil recherché :</h4> <textarea class="form-control" name="profil" id="profilv" placeholder="Profil" aria-placeholder="Profil" rows="3"></textarea> <div id="erreurProfil"> </div>
+                                                                                <br>
+                                                                                <br> <div class="row">
+                                                                                       <div class="col-md-6"><h4>Date d\'expiration de l'offre :</h4> <input type="date" id="dateExpr" name="entreprise"
+                                                                                                                                                        required="required" class="form-control input-lg"/> <div id="erreurDateExpr"> </div> </div>
+                                                                                    </div>
+                                                                            <input type="hidden" value="{{"now"|date("m/d/Y")  }}" id="datepub"/>
+
+                                                                            <br> <br> <div class="panel-footer"> </div>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <div class="row">
+                                            <div class="col-md-6"><input type="submit" onclick="ajouter();" value="Valider" id="buttonValider" name="valider" class="btn btn-primary valider"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+        </div>
+        <!-- END MAIN CONTENT -->
+    </div>
+    <!-- END MAIN -->
+    <div class="clearfix"></div>
+    <footer>
+        <div class="container-fluid">
+            <p class="copyright">&copy; 2017 <a href="https://www.themeineed.com" target="_blank">Theme I Need</a>. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="{{ asset('jquery-3.2.1.min.js') }}"></script>
+    
+    <script>
+
+
+
+        $(document).ready(function() {
+
+            $('#myModal').on('hidden.bs.modal', function () {
+                location.reload();
+            });
+
+        });
+        $(document).ready(function(){
+            // code to read selected table row cell data (values).
+            $(".btnSelect").on('click',function(){
+
+
+              var currentRow=$(this).closest("tr");
+             var id=currentRow.find("td:eq(0)").html();
+
+
+             $.ajax({
+                 url:'/client/mesOffres/supprimer',
+                 type: "POST",
+                 dataType: "json",
+                 data: {
+                     "id": id
+                 },
+                 async: true,
+                 success: function (data)
+                 {
+                     console.log(data);
+
+                     $("table tbody").find('button[name='+id+']').each(function(){
+
+                         $(this).parents("tr").hide(1000);
+
+                         $("#" + id).hide(1000);
+                         $("#" + id).empty();
+
+                     });
+
+
+                 }
+             })
+
+
+            });
+        });
+
+
+        $(document).ready(function(){
+
+
+            // code to read selected table row cell data (values).
+            $(".modifier").on('click',function(){
+
+                var currentRow1=$(this).parent().parent();
+
+                console.log(currentRow1);
+                var id1=currentRow1.find("td:eq(0)").html();
+                var poste = $("#poste"+id1).val();
+                var societe = $("#societe"+id1).val();
+                var lieux = $("#lieux"+id1).val();
+                var mission = $("#mission"+id1).val();
+                var profil = $("#profil"+id1).val();
+                var datedeb = $("#datedeb"+id1).val();
+                var dateexpr = $("#dateexpr"+id1).val();
+                var datepub = $("#datepub"+id1).val();
+                var nbVUe = $("#nbVue"+id1).val();
+
+                $("#mod"+id1).attr("disabled", true);
+
+                $("#"+id1).append('<div class="row">\n' +
+                    '                                    <div class="col-md-4">   <h4>Entreprise :</h4> <input type="text" id="entreprisev'+id1+'" name="entreprise"\n' +
+                    '                                               value="'+societe+'" required="required" class="form-control input-lg"/>  <div id="erreurEnt'+id1+'"> </div> </div> \n' +
+                    '                                    <div class="col-md-4"> <h4>Type : </h4> <select class="form-control typev'+id1+'" id="typev'+id1+'" > <option value="vide"></option>\n' +
+                    '\t\t\t\t\t\t\t\t\t\t<option value="CDI">CDI</option>\n' +
+                    '\t\t\t\t\t\t\t\t\t\t<option value="CDD">CDD</option>\n' +
+                    '\t\t\t\t\t\t\t\t\t\t<option value="Alternance">Alternance</option>\n' +
+                    '\t\t\t\t\t\t\t\t\t\t<option value="Stage">Stage</option> </select>  <div id="erreurType'+id1+'"> </div></div>\n' +
+                    '                                    <div class="col-md-4"> <h4>Date début : </h4> <input type="date" id="datedebv'+id1+'" name="entreprise"\n' +
+                    '                                               value="'+datedeb+'" required="required" class="form-control input-lg"/> <div id="erreurDate'+id1+'"> </div> </div> \n' +
+                    '                                </div>\n' +
+                    '                               <div class="row">  <div class="col-md-6"> <h4>Poste :</h4> <input type="text" id="postev'+id1+'" name="entreprise"\n' +
+                    '                                               value="'+poste+'" required="required" class="form-control input-lg"/>  <div id="erreurPoste'+id1+'"> </div></div>  <div class="col-md-6"> <h4>Lieux :</h4> <input type="text" id="lieuxv'+id1+'" value="'+lieux+'" required="required" class="form-control input-lg"/> ' +
+                    '                              <div id="erreurlieux'+id1+'"> </div>  </div>  <br> <br>\n' +
+                    '                                <br>\n' +
+                    '                                <br>\n' +
+                    '                                <h4>Mission :</h4> <textarea class="form-control" name="mission" id="missionv'+id1+'" placeholder="Missionn" rows="5">'+mission+'</textarea> <div id="erreurMission'+id1+'"> </div>\n' +
+                    '                                <br>\n' +
+                    '                                <h4>Profil recherché :</h4> <textarea class="form-control" name="profil" id="profilv'+id1+'" placeholder="Profil" rows="3">'+profil+'</textarea> <div id="erreurProfil'+id1+'"> </div>\n' +
+                    '                                <br>\n' +
+                    '                                <br> <div class="row">\n' +
+                    '                                    <div class="col-md-4"><h4>Publié par  :</h4> <p></p></div>\n' +
+                    '                                    <div class="col-md-4"> <h4>Date de publication : </h4> <p>'+datepub+'</p></div>\n' +
+                    '\n' +
+                    '                                </div>\n' +
+                    '                                    <div class="row">\n' +
+                    '                                        <div class="col-md-4"><h4>Nombre de vue :</h4> <p>'+nbVUe+'</p></div>\n' +
+                    '                                        <div class="col-md-4"><h4>Date d\'expiration de l\'offre :</h4> <p>'+dateexpr+'</p></div>\n' +
+                    '                                    </div></div> <br> <br> <div class="panel-footer"> <div class="row">\n' +
+                    '                                    <div class="col-md-6"><input type="submit" onclick="valider('+id1+');" value="Valider" id="buttonValider" name="valider" class="btn btn-primary valider"></div> <div class="col-md-6"><input type="submit" onclick="annuler('+id1+');" value="Annuler" id="buttonValider" name="annuler" class="btn btn-default annuler"></div>\n' +
+
+                    '                                    </div></div>');
+
+
+
+                $("#"+id1).show(5);
+
+
+            });
+
+
+        });
+
+
+        function valider(id1){
+
+            $("#erreurPoste" + id1).empty();
+            $("#erreurMission"+id1).empty();
+            $("#erreurType"+id1).empty();
+            $("#erreurlieux"+id1).empty();
+            $("#erreurProfil"+id1).empty();
+            $("#erreurEnt"+id1).empty();
+            $("#erreurDate"+id1).empty();
+
+            var poste = $("#postev"+id1).val();
+            var societe = $("#entreprisev"+id1).val();
+            var lieux = $("#lieuxv"+id1).val();
+            var mission = $("#missionv"+id1).val();
+            var profil = $("#profilv"+id1).val();
+            var datedeb = $("#datedebv"+id1).val();
+
+
+            var dateexpr = $("#dateexpr"+id1).val();
+            var datepub = $("#datepub"+id1).val();
+            var nbVUe = $("#nbVue"+id1).val();
+            var type = $("#typev"+id1).val();
+
+            if (poste =="" || type=="vide" || lieux=="" || mission == "" || profil =="" || societe == "" || datedeb== ""){
+
+                if (poste == "") {
+                    $("#erreurPoste" + id1).append('<p style="color: #8f1f00"> Vous devez remplir ce champ : poste.</p>');
+                }
+
+                if (type== "vide") {
+                    $("#erreurType"+id1).append('<p style="color: #8f1f00"> Vous devez remplir ce champ : type .</p>');
+                }
+
+                if (lieux == "") {
+                    $("#erreurlieux"+id1).append('<p style="color: #8f1f00"> Vous devez remplir ce champ : lieux.</p>');
+                }
+
+                if (mission == "") {
+                    $("#erreurMission"+id1).append('<p style="color: #8f1f00"> Vous devez remplir ce champ : mission.</p>');
+                }
+
+                if (profil == "") {
+                    $("#erreurProfil"+id1).append('<p style="color: #8f1f00"> Vous devez remplir ce champ : profil.</p>');
+                }
+
+                if (societe == "") {
+                    $("#erreurEnt"+id1).append('<p style="color: #8f1f00"> Vous devez remplir ce champ : entreprise.</p>');
+                }
+
+                if(datedeb == ""){
+                    $("#erreurDate"+id1).append('<p style="color: #8f1f00"> Vous devez remplir ce champ : date.</p>');
+
+                }
+
+
+            }else {
+
+                $.ajax({
+                    url: '/client/mesOffres/modifier',
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        "id": id1,
+                        "poste": poste,
+                        "societe": societe,
+                        "lieux": lieux,
+                        "mission": mission,
+                        "profil": profil,
+                        "datedeb": datedeb,
+                        "dateexpr": dateexpr,
+                        "datepub": datepub,
+                        "nbVUe": nbVUe,
+                        "type": type
+                    },
+                    async: true,
+                    success: function (data) {
+                        console.log(data);
+                        $("#tr" + id1).find("td:eq(1)").html(poste);
+                        $("#tr" + id1).find("td:eq(2)").html(type);
+                        $("#tr" + id1).find("td:eq(3)").html(societe);
+                        $("#tr" + id1).find("td:eq(4)").html(lieux);
+                        $("#tr" + id1).hide(500, function () {
+                            $("#tr" + id1).attr('class', 'alert alert-success');
+                            $("#tr" + id1).show(500);
+                        });
+
+                        $("#mod" + id1).attr("disabled", false);
+                        $("#" + id1).hide(1000);
+                        $("#" + id1).empty();
+                    }
+                });
+
+            }
+
+
+        }
+
+        function annuler(id1) {
+            $("#mod" + id1).attr("disabled", false);
+            $("#" + id1).hide(1000);
+            $("#" + id1).empty();
+        }
+
+        function ajouter() {
+
+            $("#erreurPoste").empty();
+            $("#erreurMission").empty();
+            $("#erreurType").empty();
+            $("#erreurlieux").empty();
+            $("#erreurProfil").empty();
+            $("#erreurEnt").empty();
+            $("#erreurDate").empty();
+
+            $("#erreurDateExpr").empty();
+
+            var poste = $("#postev").val();
+            var societe = $("#entreprisev").val();
+            var lieux = $("#lieuxv").val();
+            var mission = $("#missionv").val();
+            var profil = $("#profilv").val();
+            var datedeb = $("#datedebv").val();
+            var dateexpr = $("#dateExpr").val();
+            var type = $("#typev").val();
+            var datePub = $("#datepub").val();
+
+
+            if (poste =="" || type=="vide" || lieux=="" || mission == "" || profil =="" || societe == "" || datedeb== "" || dateexpr ==""){
+
+                if (poste == "") {
+                    $("#erreurPoste").append('<p style="color: #8f1f00"> Vous devez remplir ce champ : poste.</p>');
+                }
+
+                if (type== "vide") {
+                    $("#erreurType").append('<p style="color: #8f1f00"> Vous devez remplir ce champ : type .</p>');
+                }
+
+                if (lieux == "") {
+                    $("#erreurlieux").append('<p style="color: #8f1f00"> Vous devez remplir ce champ : lieux.</p>');
+                }
+
+                if (mission == "") {
+                    $("#erreurMission").append('<p style="color: #8f1f00"> Vous devez remplir ce champ : mission.</p>');
+                }
+
+                if (profil == "") {
+                    $("#erreurProfil").append('<p style="color: #8f1f00"> Vous devez remplir ce champ : profil.</p>');
+                }
+
+                if (societe == "") {
+                    $("#erreurEnt").append('<p style="color: #8f1f00"> Vous devez remplir ce champ : entreprise.</p>');
+                }
+
+                if(datedeb == ""){
+                    $("#erreurDate").append('<p style="color: #8f1f00"> Vous devez remplir ce champ : date de debut.</p>');
+
+                }
+
+                if(dateexpr == ""){
+                    $("#erreurDateExpr").append('<p style="color: #8f1f00"> Vous devez remplir ce champ : date d\'expiration .</p>');
+                }
+
+
+            }else {
+
+                $.ajax({
+                    url: '/client/mesOffres/ajouter',
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        "poste": poste,
+                        "societe": societe,
+                        "lieux": lieux,
+                        "mission": mission,
+                        "profil": profil,
+                        "datedeb": datedeb,
+                        "dateexpr": dateexpr,
+                        "type": type
+                    },
+                    async: true,
+                    success: function (data) {
+                        console.log(data);
+
+                        $("#erreurPoste").empty();
+                        $("#erreurMission").empty();
+                        $("#erreurType").empty();
+                        $("#erreurlieux").empty();
+                        $("#erreurProfil").empty();
+                        $("#erreurEnt").empty();
+                        $("#erreurDate").empty();
+                        $("#erreurDateExpr").empty();
+
+                        var markup = '<tr id="tr'+data.id+'"><td class="id" >'+data.id+'</td><td class="poste" >'+poste+'</td><td class="type">' + type + '</td><td class="societe">' + societe + '</td><td>'+ lieux + '</td>\n' +
+                            '                    <td><button type="submit" class="btn btn-danger btn-sm btnSelect"  name="'+data.id+'" value="supp"><i class="fa fa-trash-o"></i> Supprimer</button></td>\n' +
+                            '                        <td><button type="submit" id="mod'+data.id+'"  class="btn btn-primary btn-sm modifier" name="'+data.id+'" value="mod"><i class="fa fa-refresh"></i> Modifier</button></td>' +
+                            ' <input id="poste'+data.id+'" type="hidden" value="'+societe+'"/>\n' +
+                            '                                        <input id="societe'+data.id+'" type="hidden" value="'+societe+'"/>\n' +
+                            '                                        <input id="lieux'+data.id+'" type="hidden" value="'+lieux+'">\n' +
+                            '                                        <input id="mission'+data.id+'" type="hidden" value="'+mission+'"/>\n' +
+                            '                                        <input id="profil'+data.id+'" type="hidden" value="'+profil+'"/>\n' +
+                            '                                        <input id="datedeb'+data.id+'" type="hidden" value="'+datedeb+'"/>\n' +
+                            '                                        <input id="dateexpr'+data.id+'" type="hidden" value="'+dateexpr+'"/>\n' +
+                            '                                        <input id="datepub'+data.id+'" type="hidden" value="'+datePub+'">\n' +
+                            '                                        <input id="nbVue'+data.id+'" type="hidden" value="0"/>\n' +
+                            '                                 <div id="'+data.id+'" class="des'+data.id+'">\n' +
+                            '\n' +
+                            '                                 </div></tr>';
+
+                        $("table tbody").append(markup);
+
+                        $('#myModal').modal('toggle');
+                    }
+                });
+
+            }
+
+        }
+
+        function viderErreur() {
+            $("#erreurPoste").empty();
+            $("#erreurMission").empty();
+            $("#erreurType").empty();
+            $("#erreurlieux").empty();
+            $("#erreurProfil").empty();
+            $("#erreurEnt").empty();
+            $("#erreurDate").empty();
+
+            $("#erreurDateExpr").empty();
+        }
+
+
+
+
+    </script>
+
+
+
+{% endblock %}

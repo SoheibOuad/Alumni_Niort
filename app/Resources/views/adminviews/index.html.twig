@@ -1,0 +1,125 @@
+{% extends "base2.html.twig" %}
+
+{% block sidebar %}
+
+	<div id="wrapper">
+		<div id="sidebar-nav" class="sidebar">
+			<div class="sidebar-scroll">
+				<nav>
+					<ul class="nav">
+						<li><a href="{{ path('admin_page') }}" class="active"><i class="lnr lnr-home"></i> <span>Tableau de bord</span></a></li>
+						<li><a href="{{ path('demande_addmission') }}" class=""><i class="lnr lnr-envelope"></i> <span>Demandes d'addmission</span></a></li>
+						<li><a href="{{ path('gerer_offre_admin') }}" class=""><i class="lnr lnr-envelope"></i> <span>Gerer offres</span></a></li>
+
+						<li>
+							<a href="#subPages" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>Gerer utilisateurs</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+							<div id="subPages" class="collapse ">
+								<ul class="nav">
+									<li><a href="{{ path('admin_gerer_admins') }}" class="">Gerer admins</a></li>
+									<li><a href="{{ path('admin_gerer_moderateur') }}" class="">Gerer Modérateur</a></li>
+									<li><a href="{{ path('admin_gerer_utilisateur') }}" class="active">Gerer membres</a></li>
+								</ul>
+							</div>
+						</li>
+						<li><a href="{{ path('profil') }}" class=""><i class="lnr lnr-user"></i> <span>Profil</span></a></li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block body %}
+
+
+		<div class="main">
+			<!-- MAIN CONTENT -->
+			<div class="main-content">
+				<div class="container-fluid">
+					<!-- OVERVIEW -->
+					<div class="panel panel-headline">
+						<div class="panel-heading">
+							<h3 class="panel-title">Différent statistique du site</h3>
+							<p class="panel-subtitle"></p>
+						</div>
+						<div class="panel-body">
+							<div class="row">
+
+								<div class="col-md-5">
+									<div class="metric">
+										<span class="icon"><i class="fa fa-shopping-bag"></i></span>
+										<p>
+											<span class="number">{{ nb }}</span>
+											<span class="title"> Nombre de personnes ayant un accès membre au site </span>
+										</p>
+									</div>
+								</div>
+								<div class="col-md-5">
+									<div class="metric">
+										<span class="icon"><i class="fa fa-eye"></i></span>
+										<p>
+											<span class="number">{{ nbvue }}</span>
+											<span class="title">Nombre de visite sur le site</span>
+										</p>
+									</div>
+								</div>
+
+							</div>
+
+
+							<canvas id="myChart"></canvas>
+
+						</div>
+					</div>
+					<!-- END OVERVIEW -->
+
+
+				</div>
+			</div>
+			<!-- END MAIN CONTENT -->
+		</div>
+		<!-- END MAIN -->
+		<div class="clearfix"></div>
+		<footer>
+			<div class="container-fluid">
+				<p class="copyright">&copy; 2017 <a href="https://www.themeineed.com" target="_blank">Theme I Need</a>. All Rights Reserved.</p>
+			</div>
+		</footer>
+
+	<script>
+
+		var ctx = document.getElementById('myChart').getContext('2d');
+		var chart = new Chart(ctx, {
+			// The type of chart we want to create
+			type: 'line',
+
+			// The data for our dataset
+			data: {
+				labels: ['Janvier', 'Fevrier', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet','Aout','Septembre','Octobre','Novembre','Decembre'],
+				datasets: [{
+					label: "Nombre d'offres",
+					backgroundColor: 'rgba(255, 99, 132,0.25)',
+					borderColor: 'rgb(255, 99, 132)',
+					data: [0, 10, 5, 2, 20, 30, 45,13,36,8,6,9]
+				}]
+			},
+
+			// Configuration options go here
+			options: {
+				title:{
+					display: true,
+					text: "Nombre d’offres publiées par mois"
+				},
+				elements:{
+					point: {
+						radius: 8
+					}
+				}
+			}
+		});
+	</script>
+
+
+
+
+{% endblock %}

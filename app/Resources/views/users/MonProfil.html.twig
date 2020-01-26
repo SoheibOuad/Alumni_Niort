@@ -1,0 +1,1257 @@
+{% extends "base2.html.twig" %}
+
+{% block sidebar %}
+
+
+    <div id="wrapper">
+        <div id="sidebar-nav" class="sidebar">
+            <div class="sidebar-scroll">
+                <nav>
+                    <ul class="nav">
+                        <li><a href="{{ path('client_page') }}" class=""><i class="lnr lnr-home"></i> <span>Tableau de bord</span></a></li>
+                        <li><a href="{{ path('client_offres') }}" class=""><i class="lnr lnr-list"></i> <span>Offres d’emploi/stages/ alternance</span></a></li>
+                        <li><a href="{{ path('client_actualite') }}" class=""><i class="lnr lnr-layers"></i> <span>Actualité de Prev’Risk</span></a></li>
+                        <li>
+                            <a href="#subPages" data-toggle="collapse" class="collapsed active"><i class="lnr lnr-file-empty"></i> <span>Profil</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+                            <div id="subPages" class="collapse ">
+                                <ul class="nav">
+                                    <li><a href="{{ path('client_profil') }}" class="active">Mon Profil</a></li>
+                                    <li><a href="{{ path('client_mesOffre') }}" class="">Mes offres</a></li>
+                                    <li><a href="{{ path('client_mesActualite') }}" class="">Mes actualités</a></li>
+                                </ul>
+                            </div>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block body  %}
+    <div class="main" >
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            {% if app.session.flashBag.has('modiferreur') %}
+
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <i class="fa fa-times-circle"></i> {% for msg in app.session.flashBag.get('modiferreur') %}
+                        {{ msg }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {% if app.session.flashBag.has('modifsucces') %}
+
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <i class="fa fa-check-circle"></i> {% for msg in app.session.flashBag.get('modifsucces') %}
+                        {{ msg }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="container-fluid">
+                <div class="panel panel-profile">
+                    <div class="clearfix">
+                        <!-- LEFT COLUMN -->
+                        <div class="profile-center">
+
+                            <!-- PROFILE HEADER -->
+                            <div class="profile-header">
+                                <div class="overlay"></div>
+                                <div class="profile-main">
+
+                                    <img src="{{ asset('template/img/img'~ app.user.id ~'.jpeg') }}" onerror="this.onerror=null;this.src='{{ asset('template/img/avatar-default.png') }}';" class="img-circle" alt="Avatar">
+                                    <h3 class="name">{{ user.nom }} {{ user.prenom }}</h3>
+                                    <span class="online-status status-available">Actif</span>
+                                </div>
+
+                            </div>
+                            <!-- END PROFILE HEADER -->
+                            <!-- PROFILE DETAIL -->
+                            <div class="profile-detail">
+                                <div class="profile-info">
+                                    <h4 class="heading">Informations basique</h4>
+                                    <ul class="list-unstyled list-justify">
+                                        <li>Nom <span>{{ user.nom}}</span></li>
+                                        <li>Prenom <span>{{ user.prenom }}</span></li>
+                                        <li>Email <span>{{ user.email }}</span></li>
+                                    </ul>
+                                </div>
+                                <div class="profile-info">
+                                    <h4 class="heading">Plus d'information sur vous</h4>
+                                    <ul class="list-unstyled list-justify">
+                                        <li>Diplome <span>{{ user.diplome}}</span></li>
+                                        <li>Date d'entrer à l'Iriaf <span>{{ user.dateEntree|date('d/m/Y') }}</span></li>
+                                        <li>Date de sortie de l'Iriaf <span>{{ user.dateSortie|date('d/m/Y') }}</span></li>
+                                        <li>Statut:<span> {% if etudiant == 'ok' %} Etudiant {% else %} Enseignant {% endif %}</span> </li><br>
+
+                                        <li>Compétences :
+                                                {% if comps == "vide" %}
+                                                    <span>
+                                                  Cette information n'est pas encore renseigné
+                                                   </span> <br>
+                                                {% else %}
+                                                    {% for c in comps %}
+                                                        <span>
+                                                    {{  c.competence}}
+                                                        </span> <br>
+                                                    {% endfor %}
+                                                {% endif %}
+                                             </li>
+
+                                        <li>Emails :
+                                            {% if mails == "vide" %}
+                                                <span>
+                                                  Cette information n'est pas encore renseigné
+                                                   </span> <br>
+                                            {% else %}
+                                                {% for m in mails %}
+                                                    <span>
+                                                    {{  m.mail}}
+                                                        </span> <br>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </li>
+
+                                        <li>Nationalites: {% if tab2 == "vide" %}
+                                            <span>
+                                                  Cette information n'est pas encore renseigné
+                                                   </span> <br>
+                                            {% else %} {% for n in tab2 %} <span> {{  n.nationalite}}</span> <br> {% endfor %} {% endif %}</li>
+
+                                        <li>Téléphones: {% if tels == "vide" %}
+                                            <span>
+                                                  Cette information n'est pas encore renseigné
+                                                   </span> <br>
+                                            {% else %} {% for t in tels %} <span>{{  t.telephone}}</span> <br> {% endfor %} {% endif %}</li>
+                                        <li>Dernier Poste Occupé:<br>
+                                            {% if postes == "vide" %}
+                                            <span>
+                                                  Cette information n'est pas encore renseigné
+                                                   </span> <br>
+                                            {% else %}
+                                            <span> Poste :{{ postes.poste }}</span>
+                                         <br> <span> Entreprise :{{ postes.entreprise }}</span> <br>
+                                          <br> <span> Date de debut :{{ postes.dateDeb|date('d/m/Y') }}</span>
+                                        <br>  <span> Date de fin :{{ postes.dateFin|date('d/m/Y') }}</span> {% endif %}</li>
+                                    </ul>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal1" onclick="viderErreur();">Compléter vos informations</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal2" onclick="viderErreur();">Modifier vos informations</button>
+                                    </div>
+                                </div>
+                                <!-- Modal -->
+                                <div class="col-lg-8 col-md-10 ml-auto mr-auto">
+
+                                    <div id="myModal1" class="modal fade" role="dialog">
+                                        <div class="modal-dialog">
+
+                                        <!-- Modal content-->
+                                            <div class="modal-content">
+
+                                                <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                <h4 class="modal-title">Compléter vos informations</h4>
+                                                </div>
+                                            <div class="modal-body">
+
+                                                    <form action="{{ path('completer_profil_client')  }}" method="post" enctype="multipart/form-data">
+                                                        <div id="erreurAnnonce">   <button type="button" id="buttonAjoutCom" onclick="affiche4();" class="btn btn-default"><i class="fa fa-plus-square"></i> Ajouter une nouvelle compétence </button></div>
+                                                         <br>
+                                                        <div id="competences">
+
+                                                        </div>
+
+                                                        <br>
+
+                                                        <button onclick="afficher();" type="button" class="btn btn-default"><i class="fa fa-plus-square"></i> Ajouter Email</button>
+                                                         <br>
+                                                        <div id="emails">
+                                                            <br>
+                                                        </div>
+
+                                                        <br>
+
+                                                        <button onclick="affiche2();" type="button" class="btn btn-default"><i class="fa fa-plus-square"></i> Ajouter un numero de telephone</button>
+
+                                                        <div id="telephones">
+                                                            <br>
+                                                        </div>
+
+                                                        <br>
+
+                                                        <button onclick="affiche3();" type="button" class="btn btn-default"><i class="fa fa-plus-square"></i> Ajouter une nationalite</button>
+                                                        <br>
+                                                        <div id="nationalites">
+                                                            <br>
+
+                                                        </div>
+
+                                                        <br>
+
+                                                        <button onclick="affiche5();" type="button" class="btn btn-default"><i class="fa fa-plus-square"></i> Ajouter Une experience</button>
+                                                        <br>
+                                                        <div id="experiences">
+
+                                                        </div>
+
+                                                        <br>
+                                                        <!-- <label for="photo"  class="control-label"> Ajouter une photo de profil </label>
+                                                         <input type="file"   id="photo" name="hey" class="form-control input-lg custom-file-input" />-->
+                                                         <label  class="control-label"> Ajouter une photo de profil </label>
+                                                         <br>
+                                                         <label for="imageUpload" class="btn btn-default " > <i class="fa fa-plus-square"></i> Selectionner une image</label>
+                                                         <input type="file" id="imageUpload" accept="image/*" name="photo" style="display: none">
+                                                         <div id="showphoto">
+
+                                                         </div>
+
+
+
+
+
+
+
+
+                                            <br>
+                                            <br>
+                                            <br>
+
+
+                                            <div class="modal-footer">
+                                                <div class="row">
+                                                    <div class="col-md-6"><input type="submit"  value="Valider" id="buttonValider" name="valider" class="btn btn-primary valider"></div>
+                                                </div>
+                                            </div>
+
+                                            </form>
+
+                                        </div>
+                                        </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                              </div>
+
+
+
+                            <!-- Modal -->
+                            <div id="myModal2"  class="modal fade " role="dialog" >
+                                <div class="modal-dialog">
+
+                                    <!-- Modal content-->
+                                    <div class="modal-content" style="width: 800px">
+                                        <div class="modal-header">
+                                            <button type="button" onclick=" window.location.reload();" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title">Modifier vos informations</h4>
+                                        </div>
+                                        <div class="modal-body">
+
+                                            <form id="myform" method="post">
+
+                                                <h4>Modifier votre nom</h4>
+
+                                                <div class="row">
+                                                    <div class="col-md-6"><input type="text" value="{{ user.nom }}" class="form-control input-lg" id="nom" name="nom"/> <div id="erreurnom"></div> <div id="nomsucces"></div></div>
+                                                    <div class="col-md-6"><button type="button" name="modnom" class="btn btn-default btn-circle modnom"><i class="glyphicon glyphicon-ok"></i> Modifier</button></div>
+                                                </div>
+
+                                                <h4>Modifier votre prenom</h4>
+
+                                                <div class="row">
+                                                    <div class="col-md-6"><input type="text" value="{{ user.prenom }}" class="form-control input-lg" id="prenom" name="prenom"/> <div id="erreurprenom"></div> <div id="prenomsucces"></div></div>
+                                                    <div class="col-md-6"><button type="button" name="modprenom" class="btn btn-default btn-circle modprenom"><i class="glyphicon glyphicon-ok"></i> Modifier</button></div>
+                                                </div>
+
+                                                <h4>Modifier votre pseudo</h4>
+
+                                                <div class="row">
+                                                    <div class="col-md-6"><input type="text" value="{{ app.user.username }}" class="form-control input-lg" id="preudo" name="pseudo"/> <div id="erreurpseudo"></div> <div id="pseudosucces"></div></div>
+                                                    <div class="col-md-6"><button type="button" name="modpseudo" class="btn btn-default btn-circle modpseudo"><i class="glyphicon glyphicon-ok"></i> Modifier</button></div>
+                                                </div>
+
+                                                <h4>Modifier votre mot de passe :</h4>
+
+                                                <div class="row">
+                                                    <div class="col-md-6"><input type="password" class="form-control input-lg" id="mdp" name="mdp"/> <div id="erreurmdp"></div> <div id="mdpsucces"></div></div>
+                                                    <div class="col-md-6"><button type="button" name="modmdp" class="btn btn-default btn-circle modMdp"><i class="glyphicon glyphicon-ok"></i> Modifier</button></div>
+                                                </div>
+
+
+
+                                                <h4>Compétences :</h4>
+
+                                                <table class="table table-striped">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Compétence</th>
+                                                        <th></th>
+                                                        <th></th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for c in comps %}
+                                                    <tr id="trcom{{ c.id }}">
+                                                        <td>{{ c.id }}</td>
+                                                        <td> <input type="text" id="comps{{ c.id }}"  value="{{ c.competence }}"  class="form-control input-group-lg"/> <div id="erreurComp{{ c.id }}"></div></td>
+                                                        <td><button type="button" name="mod{{ c.id }}" class="btn btn-default btn-circle btnMod"><i class="glyphicon glyphicon-ok"></i> Modifier</button></td>
+                                                        <td><button type="button" name="{{ c.id }}" class="btn btn-danger btn-circle btnSelect"><i class="glyphicon glyphicon-remove"></i></button></td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+
+                                                <h4>Téléphones :</h4>
+
+                                                <table class="table table-striped">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Téléphone</th>
+                                                        <th></th>
+                                                        <th></th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for t in tels %}
+                                                        <tr id="trtel{{ t.id }}">
+                                                            <td>{{ t.id }}</td>
+                                                            <td> <input type="text" id="tel{{ t.id }}"  value="{{ t.telephone }}"  class="form-control input-group-lg"/> <div id="erreurtel{{ t.id }}"></div></td>
+                                                            <td><button type="button" name="modtel{{ t.id }}" class="btn btn-default btn-circle btnModtel"><i class="glyphicon glyphicon-ok"></i> Modifier</button></td>
+                                                            <td><button type="button" name="tel{{ t.id }}" class="btn btn-danger btn-circle btnSelecttel"><i class="glyphicon glyphicon-remove"></i></button></td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+
+                                                <h4>Emails :</h4>
+
+                                                <table class="table table-striped">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Email</th>
+                                                        <th></th>
+                                                        <th></th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for m in mails %}
+                                                        <tr id="trmail{{ m.id }}">
+                                                            <td>{{ m.id }}</td>
+                                                            <td> <input type="text" id="mail{{ m.id }}"  value="{{ m.mail }}"  class="form-control input-group-lg"/> <div id="erreurmail{{ m.id }}"></div></td>
+                                                            <td><button type="button" name="modmail{{ m.id }}" class="btn btn-default btn-circle btnModmail"><i class="glyphicon glyphicon-ok"></i> Modifier</button></td>
+                                                            <td><button type="button" name="mail{{ m.id }}" class="btn btn-danger btn-circle btnSelectmail"><i class="glyphicon glyphicon-remove"></i></button></td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+
+
+                                                <h4>Postes :</h4>
+
+                                                <table class="table table-striped">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>poste</th>
+                                                        <th>entreprise</th>
+                                                        <th>date debut</th>
+                                                        <th>date fin</th>
+                                                        <th></th>
+                                                        <th></th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for p in tab %}
+                                                        <tr id="trposte{{ p.id }}">
+                                                            <td>{{ p.id }}</td>
+                                                            <td> <input type="text" id="poste{{ p.id }}"  value="{{ p.poste }}"  class="form-control input-group-lg"/> <div id="erreurposte{{ p.id }}"></div></td>
+                                                            <td> <input type="text" id="entreprise{{ p.id }}"  value="{{ p.entreprise }}"  class="form-control input-group-lg"/> <div id="erreurentreprise{{ p.id }}"></div></td>
+                                                            <td> <input type="date" id="datedeb{{ p.id }}"  value="{{ p.dateDeb | date('d-m-Y') }}"  class="form-control input-group-lg"/> <div id="erreurdatedeb{{ p.id }}"></div></td>
+                                                            <td> <input type="date" id="datefin{{ p.id }}"  value="{{ p.dateFin|date('d-m-Y') }}"  class="form-control input-group-lg"/> <div id="erreurdatefin{{ p.id }}"></div></td>
+
+
+                                                            <td><button type="button" name="modposte{{ p.id }}" class="btn btn-default btn-circle btnModposte"><i class="glyphicon glyphicon-ok"></i> Modifier</button></td>
+                                                            <td><button type="button" name="poste{{ p.id }}" class="btn btn-danger btn-circle btnSelectposte"><i class="glyphicon glyphicon-remove"></i></button></td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+
+
+
+                                                </table>
+
+
+
+
+
+
+
+                                            </form>
+
+
+
+
+                                        </div>
+                                        <br>
+                                        <br>
+                                        <br>
+
+
+                                        <div class="modal-footer">
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        </div>
+                        </div>
+                        <!-- END PROFILE DETAIL -->
+                    </div>
+                    <!-- END LEFT COLUMN -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END MAIN CONTENT -->
+    </div>
+
+
+
+
+
+    <div class="clearfix"></div>
+    <footer>
+        <div class="container-fluid">
+            <p class="copyright">&copy; 2017 <a href="https://www.themeineed.com" target="_blank">Theme I Need</a>. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+
+    <script src="{{ asset('jquery-3.2.1.min.js') }}"></script>
+
+    <script>
+        $(document).ready(function() {
+
+            $('#myModal2').on('hidden.bs.modal', function () {
+                location.reload();
+            });
+
+        });
+        $("#imageUpload").change(function() {
+            var filename = this.files[0].name
+            $("#showphoto").append('<label class="control-label">'+ filename+'</label>');
+        });
+
+
+        $(document).ready(function(){
+            // code to read selected table row cell data (values).
+            $(".btnSelect").on('click',function(){
+
+                var currentRow=$(this).parent().parent();
+                var id=currentRow.find("td:eq(0)").html();
+
+
+                $.ajax({
+                    url:'/client/monProfil/supprimer/competence',
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        "id": id
+                    },
+                    async: true,
+                    success: function (data)
+                    {
+                        console.log(data);
+
+                        $("table tbody").find('button[name='+id+']').each(function(){
+
+                            $(this).parents("tr").hide(1000);
+                            $(this).parents("tr").remove();
+
+                        });
+
+
+                    }
+                })
+
+
+            });
+        });
+
+
+        $(document).ready(function(){
+            // code to read selected table row cell data (values).
+            $(".btnMod").on('click',function(){
+
+                var currentRow=$(this).parent().parent();
+                var id=currentRow.find("td:eq(0)").html();
+                var competence =  $("#comps"+id).val();
+
+                if (competence == ""){
+
+                    $("#erreurComp"+id).append('<p style="color: #8f1f00"> Vous devez remplir ce champ : Competence  .</p>');
+
+
+
+                } else{
+
+
+                    $.ajax({
+                        url:'/client/monProfil/modfier/competence',
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            "id": id,
+                            "competence": competence
+                        },
+                        async: true,
+                        success: function (data)
+                        {
+                            console.log(data);
+
+                            $("#trcom" + id).find("td:eq(1)").html(competence);
+
+
+                        }
+                    })
+                }
+
+
+
+
+            });
+        });
+
+
+        $(document).ready(function(){
+            // code to read selected table row cell data (values).
+            $(".btnSelecttel").on('click',function(){
+
+                var currentRow=$(this).parent().parent();
+                var id=currentRow.find("td:eq(0)").html();
+
+
+                $.ajax({
+                    url:'/client/monProfil/supprimer/telephone',
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        "id": id
+                    },
+                    async: true,
+                    success: function (data)
+                    {
+                        console.log(data);
+
+                        $("table tbody").find('button[name=tel'+id+']').each(function(){
+
+                            $(this).parents("tr").hide(1000);
+                            $(this).parents("tr").remove();
+
+                        });
+
+
+                    }
+                })
+
+
+            });
+        });
+
+
+        $(document).ready(function(){
+            // code to read selected table row cell data (values).
+            $(".btnModtel").on('click',function(){
+
+                var currentRow=$(this).parent().parent();
+                var id=currentRow.find("td:eq(0)").html();
+                var telephone =  $("#tel"+id).val();
+
+                if (telephone == ""){
+
+                    $("#erreurtel"+id).append('<p style="color: #8f1f00"> Vous devez remplir ce champ : Telephone  .</p>');
+
+
+
+                } else{
+
+
+                    $.ajax({
+                        url:'/client/monProfil/modfier/telephone',
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            "id": id,
+                            "telephone": telephone
+                        },
+                        async: true,
+                        success: function (data)
+                        {
+                            console.log(data);
+
+                            $("#trtel" + id).find("td:eq(1)").html(telephone);
+
+
+                        }
+                    })
+                }
+
+
+
+
+            });
+        });
+
+
+        $(document).ready(function(){
+            // code to read selected table row cell data (values).
+            $(".btnSelectmail").on('click',function(){
+
+                var currentRow=$(this).parent().parent();
+                var id=currentRow.find("td:eq(0)").html();
+
+
+                $.ajax({
+                    url:'/client/monProfil/supprimer/mail',
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        "id": id
+                    },
+                    async: true,
+                    success: function (data)
+                    {
+                        console.log(data);
+
+                        $("table tbody").find('button[name=mail'+id+']').each(function(){
+
+                            $(this).parents("tr").hide(1000);
+                            $(this).parents("tr").remove();
+
+                        });
+
+
+                    }
+                })
+
+
+            });
+        });
+
+
+        $(document).ready(function(){
+            // code to read selected table row cell data (values).
+            $(".btnModmail").on('click',function(){
+
+                var currentRow=$(this).parent().parent();
+                var id=currentRow.find("td:eq(0)").html();
+                var mail =  $("#mail"+id).val();
+
+                if (mail == ""){
+
+                    $("#erreurmail"+id).append('<p style="color: #8f1f00"> Vous devez remplir ce champ : Email  .</p>');
+
+
+
+                } else{
+
+
+                    $.ajax({
+                        url:'/client/monProfil/modfier/mail',
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            "id": id,
+                            "mail": mail
+                        },
+                        async: true,
+                        success: function (data)
+                        {
+                            console.log(data);
+
+                            $("#trmail" + id).find("td:eq(1)").html(mail);
+
+
+                        }
+                    })
+                }
+
+
+
+
+            });
+        });
+
+        $(document).ready(function(){
+            // code to read selected table row cell data (values).
+            $(".btnSelectposte").on('click',function(){
+
+                var currentRow=$(this).parent().parent();
+                var id=currentRow.find("td:eq(0)").html();
+
+
+                $.ajax({
+                    url:'/client/monProfil/supprimer/poste',
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        "id": id
+                    },
+                    async: true,
+                    success: function (data)
+                    {
+                        console.log(data);
+
+                        $("table tbody").find('button[name=poste'+id+']').each(function(){
+
+                            $(this).parents("tr").hide(1000);
+                            $(this).parents("tr").remove();
+
+                        });
+
+
+                    }
+                })
+
+
+            });
+        });
+
+
+        $(document).ready(function(){
+            // code to read selected table row cell data (values).
+            $(".btnModposte").on('click',function(){
+
+                var currentRow=$(this).parent().parent();
+                var id=currentRow.find("td:eq(0)").html();
+                var poste =  $("#poste"+id).val();
+                var entreprise = $("#entreprise"+id).val();
+                var datedeb = $('#datedeb'+id).val();
+                var datefin = $("#datefin"+id).val();
+
+                if (poste == "" || entreprise=="" || datedeb=="" || datefin=="" ){
+
+                    if (poste == ""){
+                        $("#erreurposte"+id).append('<p style="color: #8f1f00"> Vous devez remplir ce champ : Poste  .</p>');
+
+                    }
+
+                    if (entreprise == ""){
+                        $("#erreurentreprise"+id).append('<p style="color: #8f1f00"> Vous devez remplir ce champ : Entreprise  .</p>');
+
+                    }
+
+                    if (datedeb == ""){
+                        $("#erreurdatedeb"+id).append('<p style="color: #8f1f00"> Vous devez remplir ce champ : date debut  .</p>');
+
+                    }
+                    if (datefin == ""){
+                        $("#erreurdatefin"+id).append('<p style="color: #8f1f00"> Vous devez remplir ce champ : date fin  .</p>');
+
+                    }
+
+
+
+                } else{
+
+
+                    $.ajax({
+                        url:'/client/monProfil/modfier/poste',
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            "id": id,
+                            "poste": poste,
+                            "entreprise": entreprise,
+                            "datedeb" : datedeb.toString(),
+                            "datefin" : datefin.toString()
+                        },
+                        async: true,
+                        success: function (data)
+                        {
+                            console.log(data);
+
+                            $("#trposte" + id).find("td:eq(1)").html(poste);
+                            $("#trposte" + id).find("td:eq(2)").html(entreprise);
+                            $("#trposte" + id).find("td:eq(3)").html(datedeb);
+                            $("#trposte" + id).find("td:eq(4)").html(datefin);
+
+
+                        }
+                    })
+                }
+
+
+
+
+            });
+        });
+
+
+        $(document).ready(function(){
+            // code to read selected table row cell data (values).
+            $(".modMdp").on('click',function(){
+
+                var mdp =  $("#mdp").val();
+
+                if (mdp == ""){
+
+                    $("#erreurmdp").append('<p style="color: #8f1f00"> Vous devez remplir ce champ : mot de passe  .</p>');
+
+
+
+                } else{
+
+
+                    $.ajax({
+                        url:'/client/monProfil/modfier/mdp',
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+
+                            "mdp": mdp
+                        },
+                        async: true,
+                        success: function (data)
+                        {
+                            console.log(data);
+                            $("#mdpsucces").append('<p style="color: green"> Votre mot de passe a été changé avec succes  .</p>');
+
+                        },
+                        error: function () {
+                            console.log("erreuuuuur");
+                        }
+                    })
+                }
+
+
+
+
+            });
+        });
+        $(document).ready(function(){
+            // code to read selected table row cell data (values).
+            $(".modnom").on('click',function(){
+
+                var nom =  $("#nom").val();
+
+                console.log("ani dkhalt pseudo "+nom);
+
+                if (nom == ""){
+
+                    $("#erreurnom").append('<p style="color: #8f1f00"> Vous devez remplir ce champ : nom  .</p>');
+
+
+
+                } else{
+
+
+                    $.ajax({
+                        url:'/client/monProfil/modfier/nom',
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+
+                            "nom": nom
+                        },
+                        async: true,
+                        success: function (data)
+                        {
+                            console.log(data);
+                            $("#nomsucces").append('<p style="color: green"> Votre nom a été modifié avec succes  .</p>');
+
+                        }
+                    })
+                }
+
+
+
+
+            });
+        });
+        $(document).ready(function(){
+            // code to read selected table row cell data (values).
+            $(".modprenom").on('click',function(){
+
+                var prenom =  $("#prenom").val();
+                console.log("ani dkhalt pseudo "+prenom)
+
+                if (prenom == ""){
+
+                    $("#erreurprenom").append('<p style="color: #8f1f00"> Vous devez remplir ce champ : prenom  .</p>');
+
+
+
+                } else{
+
+                    $.ajax({
+                        url:'/client/monProfil/modfier/prenom',
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+
+                            "prenom": prenom
+                        },
+                        async: true,
+                        success: function (data)
+                        {
+                            console.log(data);
+                            $("#prenomsucces").append('<p style="color: green"> Votre prenom a été changé avec succes  .</p>');
+
+                        }
+                    })
+                }
+
+
+
+
+            });
+        });
+        $(document).ready(function(){
+            // code to read selected table row cell data (values).
+            $(".modpseudo").on('click',function(){
+
+                var pseudo =  $("#pseudo").val();
+
+                console.log("ani dkhalt pseudo "+pseudo);
+
+                if (pseudo == undefined){
+
+                    $("#erreurpseudo").append('<p style="color: #8f1f00"> Vous devez remplir ce champ : pseudo .</p>');
+
+
+
+                } else{
+
+
+                    $.ajax({
+                        url:'/client/monProfil/modfier/pseudo',
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+
+                            "pseudo": pseudo
+                        },
+                        async: true,
+                        success: function (data)
+                        {
+                            console.log(data);
+                            $("#pseudosucces").append('<p style="color: green"> Votre pseudo a été changé avec succes  .</p>');
+
+                        }
+                    })
+                }
+
+
+
+
+            });
+        });
+
+
+        var i=1;
+
+        function afficher()
+        {
+
+            $("#emails").hide(0);
+
+            i++;
+
+            var email="#email"+i;
+            var email1="email"+i;
+
+            var div=document.createElement('div');
+
+            div.classList.add('form-group');
+
+            //div.setAttribute('id',email);
+
+            var div2=document.createElement('div');
+            div2.classList.add('col-lg-10' ,'col-sm-10');
+
+            var input=document.createElement('input');
+
+            input.setAttribute('type',"email");
+
+            input.setAttribute('id',email);
+
+            input.setAttribute('name',email1);
+
+            input.setAttribute('class','form-control');
+
+            input.setAttribute('placeholder',"email " +i);
+            var br = document.createElement('br');
+
+            div2.appendChild(input);
+            div.appendChild(div2);
+            div.appendChild(br);
+            document.getElementById("emails").appendChild(div);
+
+            $("#emails").show(5);
+            // body...
+        }
+
+
+        var h=1;
+        function affiche4() {
+
+            $("#competences").hide(0);
+            h++;
+
+            var tel="#competence"+h;
+            var tel1="competence"+h;
+
+            var div=document.createElement('div');
+
+            div.classList.add('form-group');
+
+            var div2=document.createElement('div');
+            div2.classList.add('col-lg-10' ,'col-sm-10');
+
+            var input=document.createElement('input');
+
+            input.setAttribute('type',"text");
+
+            input.setAttribute('id',tel);
+
+            input.setAttribute('name',tel1);
+
+            input.setAttribute('class',"form-control");
+
+            input.setAttribute('placeholder',"Competence " +h);
+
+            var br = document.createElement('br');
+
+            div2.appendChild(input);
+            div.appendChild(div2);
+            div.appendChild(br);
+
+            document.getElementById("competences").appendChild(div);
+
+            $("#competences").show(5);
+
+        }
+
+        var j=1;
+
+        function affiche2() {
+
+            $("#telephones").hide(0);
+            j++;
+
+            var tel="#telephone"+j;
+            var tel1="telephone"+j;
+
+            var div=document.createElement('div');
+
+            div.classList.add('form-group');
+
+            var div2=document.createElement('div');
+            div2.classList.add('col-lg-10' ,'col-sm-10');
+
+            var input=document.createElement('input');
+
+            input.setAttribute('type',"text");
+
+            input.setAttribute('id',tel);
+
+            input.setAttribute('name',tel1);
+
+            input.setAttribute('class',"form-control");
+
+            input.setAttribute('placeholder',"numero de telephone " +j);
+
+            var br = document.createElement('br');
+
+            div2.appendChild(input);
+            div.appendChild(div2);
+            div.appendChild(br);
+            document.getElementById("telephones").appendChild(div);
+
+            $("#telephones").show(5);
+        }
+
+        var k=1;
+        function affiche3() {
+
+
+
+            $("#nationalites").hide(0);
+            k++;
+
+            var nationalitesArray = {{ liste|json_encode|raw }};
+
+            var tel="#nationalite"+k;
+            var tel1="nationalite"+k;
+
+            var div=document.createElement('div');
+
+            div.classList.add('form-group');
+
+            var div2=document.createElement('div');
+            div2.classList.add('col-lg-10' ,'col-sm-10');
+
+
+            var selectList = document.createElement("select");
+            selectList.id = tel;
+            selectList.setAttribute('name',tel1);
+            selectList.setAttribute('class',"form-control");
+            div2.appendChild(selectList);
+
+
+            var br = document.createElement('br');
+
+            for(var i=0;i<nationalitesArray.length;i++) {
+                var option = document.createElement("option");
+                option.value =nationalitesArray[i];
+                option.text =nationalitesArray[i];
+                selectList.appendChild(option);
+            }
+
+            div.appendChild(div2);
+            div.appendChild(br);
+
+            document.getElementById("nationalites").appendChild(div);
+
+            $("#nationalites").show(5);
+
+        }
+
+        var   m=1;
+
+        function affiche5() {
+
+
+            $("#experiences").hide(0);
+            m++;
+            var poste ="poste"+m;
+            var posteid ="#poste"+m;
+
+            var entreprise = "entreprise"+m;
+            var entrepriseid="#entreprise"+m;
+
+            var datedeb ="datedeb"+m;
+            var datedebid="#datedeb"+m;
+
+            var datefin ="datefin"+m;
+            var datefinid = "#datefin"+m;
+
+            /*var labelPoste = document.createElement('label');
+            labelPoste.setAttribute('for',posteid);
+            labelPoste.textContent="Poste";*/
+
+
+            var divprinc=document.createElement('div');
+
+            divprinc.classList.add('form-group');
+
+            var div = document.createElement('div');
+            div.classList.add('col-lg-10','Col-sm-10');
+
+            divprinc.appendChild(div);
+
+            var div2 = document.createElement('div');
+
+            div2.classList.add('form-group', 'Col-md-6');
+
+
+
+            var inputPoste = document.createElement('input');
+            inputPoste.setAttribute('type',"text");
+            inputPoste.setAttribute('class',"form-control");
+            inputPoste.setAttribute('placeholder',"Poste "+m)
+            inputPoste.setAttribute('name',poste);
+            inputPoste.setAttribute('id',posteid);
+
+            div2.appendChild(inputPoste);
+
+
+            var divFormgroup2=document.createElement('div');
+            divFormgroup2.classList.add('form-group','Col-md-6');
+
+            var inputEntreprise = document.createElement('input');
+            inputEntreprise.setAttribute('type',"text");
+            inputEntreprise.setAttribute('class',"form-control");
+            inputEntreprise.setAttribute('placeholder',"Entreprise "+m);
+            inputEntreprise.setAttribute('name',entreprise);
+            inputEntreprise.setAttribute('id',entrepriseid);
+
+            divFormgroup2.appendChild(inputEntreprise);
+
+            var divFormrow1 = document.createElement('div');
+            divFormrow1.classList.add('form-row');
+
+            divFormrow1.appendChild(div2);
+            divFormrow1.appendChild(divFormgroup2);
+
+            var divFormgroup3 = document.createElement('div');
+
+            divFormgroup3.classList.add('form-group','Col-md-6');
+
+
+
+            var inputdate = document.createElement('input');
+            inputdate.setAttribute('type',"date");
+            inputdate.setAttribute('class',"form-control");
+            inputdate.setAttribute('value',"dd/mm/yyyy")
+            inputdate.setAttribute('name',datedeb);
+            inputdate.setAttribute('id',datedebid);
+
+            divFormgroup3.appendChild(inputdate);
+
+
+            var divFormgroup4=document.createElement('div');
+            divFormgroup4.classList.add('form-group','Col-md-6');
+
+            var inputdatefin = document.createElement('input');
+            inputdatefin.setAttribute('type',"date");
+            inputdatefin.setAttribute('class',"form-control");
+            inputdatefin.setAttribute('value',"dd/mm/yyyy");
+            inputdatefin.setAttribute('name',datefin);
+            inputdatefin.setAttribute('id',datefinid);
+
+            divFormgroup4.appendChild(inputdatefin);
+
+            var divFormrow2 = document.createElement('div');
+            divFormrow2.classList.add('form-row');
+
+            divFormrow2.appendChild(divFormgroup3);
+            divFormrow2.appendChild(divFormgroup4);
+
+            var br = document.createElement('br');
+            div.appendChild(divFormrow1);
+            div.appendChild(divFormrow2);
+            div.appendChild(br)
+            document.getElementById("experiences").appendChild(div);
+
+            $("#experiences").show(5);
+
+        }
+
+
+    </script>
+{% endblock %}
+
+

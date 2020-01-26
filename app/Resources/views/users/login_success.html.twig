@@ -1,0 +1,47 @@
+{% extends "base.html.twig" %}
+
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+{% endblock %}
+{% block body %}
+
+    {% if app.session.flashBag.has('token') %}
+        <div class="alert alert-danger">
+            {% for msg in app.session.flashBag.get('token') %}
+                {{ msg }}
+            {% endfor %}
+        </div>
+    {% endif %}
+    <div class="container">
+        <h1 class="text-center">BienVenue</h1>
+        <h1 class="text-center">Vous vous etes correctement autentifié </h1>
+    </div>
+
+    <br>
+    <br>
+    <br>
+
+    <div class="container">
+
+    <div class="row">
+    <div class="col-md-4">
+
+      <p class="">
+          <a href="{{ path('client_page') }}" class="btn btn-info">Acceder à l'espace réservé aux membres de priv'risk</a>
+      </p>
+
+    <p>
+        <a href="{{ path('admin_page') }}" class="btn btn-info" >Acceder à l'espace réservé aux admins</a>
+    </p>
+
+    <p>
+        <a href="{{ path('moderateur_page') }}" class="btn btn-info">Acceder à l'espace réservé aux modérateurs</a>
+    </p>
+
+    </div>
+    </div>
+    </div>
+
+{% endblock %}

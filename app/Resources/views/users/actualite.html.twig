@@ -1,0 +1,96 @@
+{% extends "base2.html.twig" %}
+
+{% block sidebar %}
+    <div id="wrapper">
+        <div id="sidebar-nav" class="sidebar">
+            <div class="sidebar-scroll">
+                <nav>
+                    <ul class="nav">
+                        <li><a href="{{ path('client_page') }}" class=""><i class="lnr lnr-home"></i> <span>Tableau de bord</span></a></li>
+                        <li><a href="{{ path('client_offres') }}" class=""><i class="lnr lnr-list"></i> <span>Offres d’emploi/stages/ alternance</span></a></li>
+                        <li><a href="{{ path('client_actualite') }}" class="active"><i class="lnr lnr-layers"></i> <span>Actualité de Prev’Risk</span></a></li>
+                        <li>
+                            <a href="#subPages" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>Profil</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+                            <div id="subPages" class="collapse ">
+                                <ul class="nav">
+                                    <li><a href="{{ path('client_profil') }}" class="">Mon Profil</a></li>
+                                    <li><a href="{{ path('client_mesOffre') }}" class="">Mes offres</a></li>
+                                    <li><a href="{{ path('client_mesActualite') }}" class="">Mes actualités</a></li>
+                                </ul>
+                            </div>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block body %}
+
+
+    <div class="main">
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <div class="container-fluid">
+                <!-- OVERVIEW -->
+                <div class="panel panel-headline">
+                    <div class="panel-heading">
+                        <div class="panel panel-headline">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Actualité de Prev’Risk</h3>
+                                <p class="panel-subtitle"></p>
+                            </div>
+                            <div class="panel-body">
+                                <h4>Explication</h4>
+                                <p>Dans cette rubrique vous trouverez les activités de Prev’Risk dont la
+                                    publication de photos des manifestations
+                                    organisées
+                                    et vous trouverez aussi les agenda de Prev’Risk : Le programme
+                                    de l’ensemble des activités réalisées et à
+                                    venir</p>
+                                <p>Les anonces ont des dates d'expiration précises .</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% for o in acualites %}
+
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">{{ o.titre }}</h3>
+                        </div>
+                        <div class="panel-body">
+                            <img src="{{ asset('template/annoncesImg/annonce'~ o.id ~'.jpg') }}" class="img-rounded" alt="Avatar">
+                            <p>Date de publication : {{ o.datePub|date('d/m/Y') }}</p>
+                            <p>Date d'expiraion : {{ o.dateExpiration|date('d/m/Y')}}</p>
+                            <p><a href="{{ path('special_annonce', {'id': o.id}) }}" target="_blank">Plus de détails</a></p>
+                        </div>
+                    </div>
+
+                {% endfor %}
+
+                <div class="navigation text-center">
+                    {{ knp_pagination_render(acualites) }}
+                </div>
+
+
+
+            </div>
+        </div>
+        <!-- END MAIN CONTENT -->
+    </div>
+    <!-- END MAIN -->
+    <div class="clearfix"></div>
+    <footer>
+        <div class="container-fluid">
+            <p class="copyright">&copy; 2017 <a href="https://www.themeineed.com" target="_blank">Theme I Need</a>. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+
+
+
+{% endblock %}

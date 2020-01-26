@@ -1,0 +1,109 @@
+{% extends "base2.html.twig" %}
+
+{% block sidebar %}
+    <div id="wrapper">
+        <div id="sidebar-nav" class="sidebar">
+            <div class="sidebar-scroll">
+                <nav>
+                    <ul class="nav">
+                        <li><a href="{{ path('client_page') }}" class="active"><i class="lnr lnr-home"></i> <span>Tableau de bord</span></a></li>
+                        <li><a href="{{ path('client_offres') }}" class=""><i class="lnr lnr-list"></i> <span>Offres d’emploi/stages/ alternance</span></a></li>
+                        <li><a href="{{ path('client_actualite') }}" class=""><i class="lnr lnr-layers"></i> <span>Actualité de Prev’Risk</span></a></li>
+                        <li>
+                            <a href="#subPages" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>Profil</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+                            <div id="subPages" class="collapse ">
+                                <ul class="nav">
+                                    <li><a href="{{ path('client_profil') }}" class="">Mon Profil</a></li>
+                                    <li><a href="{{ path('client_mesOffre') }}" class="">Mes offres</a></li>
+                                    <li><a href="{{ path('client_mesActualite') }}" class="">Mes actualités</a></li>
+                                </ul>
+                            </div>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block body %}
+
+
+    <div class="main">
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <div class="container-fluid">
+                <!-- OVERVIEW -->
+                <br>
+                <br>
+
+                <header class="major">
+                    <h2>Dernières offres publiées</h2>
+                    <p></p>
+                </header>
+                <!-- END OVERVIEW -->
+
+                <div class="row">
+                {% for o in offres %}
+                    <div class="col-md-4">
+                <div class="panel">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{ o.poste }}</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>Entretprise : {{ o.societe }} </p>
+                        <p>Type : {{ o.type }}</p>
+                        <p>Lieux : {{ o.lieux }}</p>
+                        <p>Date de publication : {{ o.datePublication|date('d/m/Y') }}</p>
+                        <p><a href="{{ path('special_offre', {'id': o.id}) }}" target="_blank">Plus de détails</a></p>
+                    </div>
+                </div>
+                    </div>
+                {% endfor %}
+                </div>
+
+                <br>
+                <br>
+
+                <header class="major">
+                    <h2>Dernières actualités publiées</h2>
+                    <p></p>
+                </header>
+
+                <div class="row">
+                    {% for o in annonces %}
+                        <div class="col-md-10">
+                            <div class="panel">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">{{ o.titre }}</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <img src="{{ asset('template/annoncesImg/annonce'~ o.id ~'.jpg') }}" class="img-rounded" alt="Avatar">
+                                    <p>Date de publication : {{ o.datePub|date('d/m/Y') }}</p>
+                                    <p>Date d'expiraion : {{ o.dateExpiration|date('d/m/Y')}}</p>
+                                    <p><a href="{{ path('special_annonce', {'id': o.id}) }}" target="_blank">Plus de détails</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+
+
+            </div>
+        </div>
+        <!-- END MAIN CONTENT -->
+    </div>
+    <!-- END MAIN -->
+    <div class="clearfix"></div>
+    <footer>
+        <div class="container-fluid">
+            <p class="copyright">&copy; 2017 <a href="https://www.themeineed.com" target="_blank">Theme I Need</a>. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+
+
+
+{% endblock %}

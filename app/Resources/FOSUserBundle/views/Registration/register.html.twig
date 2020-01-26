@@ -1,0 +1,130 @@
+{% trans_default_domain 'FOSUserBundle' %}
+{% extends "::base.html.twig" %}
+{% block fos_user_content %}
+
+    <body class="login-page sidebar-collapse">
+    <!-- Extra details for Live View on GitHub Pages -->
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NKDMSK6" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <nav class="navbar navbar-transparent navbar-color-on-scroll fixed-top navbar-expand-lg" color-on-scroll="100" id="sectionsNav">
+        <div class="container">
+            <div class="navbar-translate">
+               <h1> <a class="navbar-brand" href="{{ asset('home') }}">
+                    Priv'Risk </a> </h1>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="navbar-toggler-icon"></span>
+                    <span class="navbar-toggler-icon"></span>
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" style="height: 0.5px">
+                <ul class="navbar-nav ml-auto">
+
+
+                    <li class="nav-item">
+                    <a href="{{ path('Iriaf') }}"><img src="{{ asset('logo_iriaf (2).svg') }}" alt="Iriaf Logo" class="img-responsive logo"></a></li>
+
+                    </li>
+                    <li class="nav-item">
+                    <a href="{{ path('UP') }}"><img src="{{ asset('logo-univ-poitiers.svg') }}" alt="UP Logo" class="img-responsive logo"></a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" rel="tooltip" title="" data-placement="bottom" href="https://www.facebook.com/ComptePrevRisk/timeline?lst=100000387084557%3A100001970867629%3A1559722371" target="_blank" data-original-title="Like us on Facebook">
+                            <i class="fa fa-facebook-square"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+
+    <div  style="background-image: url('../assets/img/bg7.jpg'); background-size: cover; background-position: top center;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-8 ml-auto mr-auto">
+                    <div class="card card-login">
+                        <br>
+
+                        <div class="card-header card-header-primary text-center">
+                            <h3 class="card-title">S'enregister </h3>
+                            <h4 class="card-title">Etape 1</h4>
+                        </div>
+                        <!-- BEGIN REGISTRATION FORM -->
+                        {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+
+                        <div class="form-group">
+                            <legend class="col-form-label col-sm-15 pt-0">Votre pseudo        (*)</legend>
+                            {{ form_widget(form.username, { 'attr': {'class': 'form-control placeholder-no-fix', 'placeholder':'User Name'} }) }}
+                            {% for errorItem in form.username.vars.errors %}
+                                <span class="help-inline">{{ errorItem.message }}</span>
+                            {% endfor %}
+                        </div>
+                        <div class="form-group">
+                            <legend class="col-form-label col-sm-15 pt-0">Votre E-mail        (*)</legend>
+                            {{ form_widget(form.email, { 'attr': {'class': 'form-control', 'placeholder':'E-mail'} }) }}
+                            {% for errorItem in form.email.vars.errors %}
+                                <span class="help-inline">{{ errorItem.message }}</span>
+                            {% endfor %}
+                        </div>
+                        <div class="form-group">
+                            <legend class="col-form-label col-sm-15 pt-0">Mot de passe        (*)</legend>
+                            {{ form_widget(form.plainPassword.first, { 'attr': {'class': 'form-control', 'placeholder':'Password'} }) }}
+                            {% for errorItem in form.plainPassword.first.vars.errors %}
+                                <span class="help-inline">{{ errorItem.message }}</span>
+                            {% endfor %}
+                        </div>
+                        <div class="form-group">
+                            <legend class="col-form-label col-sm-15 pt-0">Confirmez mot de passe        (*)</legend>
+                            {{ form_widget(form.plainPassword.second, { 'attr': {'class': 'form-control', 'placeholder':'Repeat Password'} }) }}
+                            {% for errorItem in form.plainPassword.second.vars.errors %}
+                                <span class="help-inline">{{ errorItem.message }}</span>
+                            {% endfor %}
+                        </div>
+                        <div class="form-group">
+                            <legend class="col-form-label col-sm-15 pt-0">Nom          (*)</legend>
+                            {{ form_widget(form.nom, { 'attr': {'class': 'form-control', 'placeholder':'Nom'} }) }}
+                            {% for errorItem in form.nom.vars.errors %}
+                                <span class="help-inline">{{ errorItem.message }}</span>
+                            {% endfor %}
+                        </div>
+                        <div class="form-group">
+                            <legend class="col-form-label col-sm-15 pt-0">Prenom          (*)</legend>
+                            {{ form_widget(form.prenom, { 'attr': {'class': 'form-control', 'placeholder':'Prenom'} }) }}
+                            {% for errorItem in form.prenom.vars.errors %}
+                                <span class="help-inline">{{ errorItem.message }}</span>
+                            {% endfor %}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_widget(form.etat) }}
+
+                        </div>
+
+                        <div class="form-actions">
+                            <a class="btn btn-default" href="{{ path('fos_user_security_login') }}">Back to login</a>
+                            <button type="submit" id="register-submit-btn" class="btn btn-success">Suivant</button>
+                        </div>
+                        {{ form_rest(form) }}
+                        {{ form_end(form) }}
+                        <!-- END REGISTRATION FORM -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <noscript>
+        <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=111649226022273&ev=PageView&noscript=1" />
+    </noscript>
+    </body>
+    
+
+{% endblock fos_user_content %}

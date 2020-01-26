@@ -1,0 +1,202 @@
+{% extends "base2.html.twig" %}
+
+{% block sidebar %}
+    <div id="wrapper">
+        <div id="sidebar-nav" class="sidebar">
+            <div class="sidebar-scroll">
+                <nav>
+                    <ul class="nav">
+                        <li><a href="{{ path('client_page') }}" class="active"><i class="lnr lnr-home"></i> <span>Tableau de bord</span></a></li>
+                        <li><a href="{{ path('client_offres') }}" class=""><i class="lnr lnr-list"></i> <span>Offres d’emploi/stages/ alternance</span></a></li>
+                        <li><a href="{{ path('client_actualite') }}" class=""><i class="lnr lnr-layers"></i> <span>Actualité de Prev’Risk</span></a></li>
+                        <li>
+                            <a href="#subPages" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>Profil</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+                            <div id="subPages" class="collapse ">
+                                <ul class="nav">
+                                    <li><a href="{{ path('client_profil') }}" class="">Mon Profil</a></li>
+                                    <li><a href="{{ path('client_mesOffre') }}" class="">Mes offres</a></li>
+                                    <li><a href="{{ path('client_mesActualite') }}" class="">Mes actualités</a></li>
+                                </ul>
+                            </div>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block body %}
+
+
+    <div class="main">
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <div class="container-fluid">
+                <!-- OVERVIEW -->
+                <br>
+                <br>
+
+                <header class="major">
+                    <h2>Utilisation de site</h2>
+                    <p></p>
+                </header>
+                <!-- END OVERVIEW -->
+
+
+
+
+                <div class="panel">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Fonctionnalités du site</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>L’application a plusieurs fonctionnalités à fournir , la liste exhaustive des
+                            fonctionnalités se trouve dans le tableau ci-dessous :</p>
+
+
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Nom de la Rubrique</th>
+                                    <th>Fonctionnalité</th>
+                                    <th>Descriptif</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Accueil</td>
+                                    <td>Espace pour les dernières publications.</td>
+                                    <td><p>Regroupe les dernières
+                                        offres de stage ainsi les
+                                            actualités de Prev’Risk.</p></td>
+                                </tr>
+                                <tr>
+                                    <td>Offres
+                                        d’emploi/
+                                        stages /alternance</td>
+                                    <td>Espace réservé aux offres d’emplois / stages /alternance.</td>
+                                    <td> <p>- Permettre aux membres
+                                        de trouver des offres qui
+                                        alternance.
+                                        répondent à leur besoinsoit en publiant une offre
+                                        soit en postulant aux
+                                            offres.</p>
+                                        <p>
+                                            - Une case « Validation
+                                            pédagogique » :
+                                            lorsque l’offre a été
+                                            validée par l’équipe
+                                            pédagogique.
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Actualité de
+                                        Prev’Risk</td>
+                                    <td>Espace réservé à
+                                        PREV’RISK</td>
+                                    <td>
+                                        <p>
+                                            - Présentation du bureau
+                                            Prev’Risk.
+                                        </p>
+                                        <p>
+                                            - Activités de Prev’Risk dont
+                                            la publication de photos des
+                                            manifestations organisées.
+                                        </p>
+                                        <p>
+                                            - Agenda de Prev’Risk : Le
+                                            programme de l’ensemble
+                                            des activités réalisées et à
+                                            venir.
+                                        </p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>A propos</td>
+                                    <td>Présentation site</td>
+                                    <td><p>
+                                            Permettre aux visiteurs de
+                                            comprendre
+                                            l’objectif de la création du
+                                            site Prev’Risk.
+                                        </p></td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+
+                        <h4>Gestion des inscriptions :</h4>
+
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Fonctionnalité</th>
+                                <th>Descriptif</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>Devenir membre</td>
+                                <td>S’inscrire permet de :
+                                    <p>- Créer/modifier son profil sur le site,
+                                        consultable par les autres
+                                        membres (dans le respect de la RGPD).</p>
+                                    <p>- Consulter les coordonnées des autres
+                                        membres (dans le respect de la
+                                        RGPD).</p>
+                                    <p>
+                                        - Faire des commentaires sur les
+                                        publications.
+                                    </p>
+                                    <p>
+                                        - Postuler aux offres.
+                                    </p>
+                                    <p>
+                                        - Publier des offres (l’offre passe par
+                                        une validation del’administrateur avant sa publication sur
+                                        le site), les modifier et
+                                        modifier leur statut (disponible/expirée)
+                                        L’inscription d’un membre n’est effective
+                                        qu’après validation par
+                                        l’administrateur du site (qui vérifie son
+                                        appartenance aux GdR via le
+                                        document « Annuaire GdR »).
+                                    </p>
+                                </td>
+                            </tr>
+                            </tbody>
+
+
+                    </div>
+                </div>
+
+
+            </div>
+
+            <br>
+            <br>
+
+
+
+
+        </div>
+    </div>
+    <!-- END MAIN CONTENT -->
+    </div>
+    <!-- END MAIN -->
+    <div class="clearfix"></div>
+    <footer>
+        <div class="container-fluid">
+            <p class="copyright">&copy; 2017 <a href="https://www.themeineed.com" target="_blank">Theme I Need</a>. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+
+
+
+{% endblock %}

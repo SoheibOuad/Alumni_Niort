@@ -1,0 +1,114 @@
+{% extends "base2.html.twig" %}
+
+
+{% block sidebar %}
+    <div id="wrapper">
+        <div id="sidebar-nav" class="sidebar">
+            <div class="sidebar-scroll">
+                <nav>
+                    <ul class="nav">
+                        <li><a href="{{ path('moderateur_page') }}" class=""><i class="lnr lnr-home"></i> <span>Profil</span></a></li>
+                        <li><a href="{{ path('demande_addmission_mod') }}" class=""><i class="lnr lnr-envelope"></i> <span>Demandes d'addmission</span></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block body %}
+
+
+
+    <div class="main">
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            {% if app.session.flashBag.has('token') %}
+
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <i class="fa fa-check-circle"></i> {% for msg in app.session.flashBag.get('token') %}
+                        {{ msg }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <div class="container-fluid">
+                <!-- OVERVIEW -->
+                <div class="panel panel-headline">
+                    <div class="panel-heading">
+                        <div class="panel panel-headline">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Demandes d'addmission</h3>
+                                <p class="panel-subtitle">Explication l'interet de cette tache</p>
+                            </div>
+                            <div class="panel-body">
+                                <h4>Explication</h4>
+                                <p>Cette tache permet aux administrateurs de verifier si la demande envoyé est valide . ca veut dire la perssone qui veut devenir un membre de priv'risk doit etre parmi les anciens étudiants de la specialité Gdr.
+                                    L'administrateur a la possibilité d'accepter ou refuser la demande . </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="panel">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Demandes</h3>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nom</th>
+                                <th>Prenom</th>
+                                <th>Diplome</th>
+                                <th>Date entrée</th>
+                                <th>Date sortie</th>
+                                <th>Accepter</th>
+                                <th>Refuser</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for u in users%}
+                                <tr>
+                                    <td>{{ u.id }}</td>
+                                    <td>{{ u.nom }}</td>
+                                    <td>{{ u.prenom }}</td>
+                                    <td>{{ u.diplome }}</td>
+                                    <td>{{ u.dateEntree|date('d/m/Y') }}</td>
+                                    <td>{{ u.dateSortie|date('d/m/Y') }}</td>
+                                    <form method="post" action="{{ path('accepter_user_mod') }}">
+                                        <input type="hidden" value="{{ u.id }}" name="iduser">
+                                        <td><button type="submit" class="btn btn-success" name="accepter"><i class="fa fa-check-circle"></i> Accepter</button></td>
+                                    </form>
+
+                                    <form method="post" action="{{ path('refuser_user_mod') }}">
+                                        <input type="hidden" value="{{ u.id }}" name="iduser">
+                                        <td><button type="submit" class="btn btn-danger" name="refuser"><i class="fa fa-trash-o"></i> Refuser</button></td>
+                                    </form>
+
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- END MAIN CONTENT -->
+    </div>
+    <!-- END MAIN -->
+    <div class="clearfix"></div>
+    <footer>
+        <div class="container-fluid">
+            <p class="copyright">&copy; 2017 <a href="https://www.themeineed.com" target="_blank">Theme I Need</a>. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+
+
+
+{% endblock %}

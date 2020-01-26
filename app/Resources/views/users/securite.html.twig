@@ -1,0 +1,99 @@
+{% extends "base2.html.twig" %}
+
+{% block sidebar %}
+    <div id="wrapper">
+        <div id="sidebar-nav" class="sidebar">
+            <div class="sidebar-scroll">
+                <nav>
+                    <ul class="nav">
+                        <li><a href="{{ path('client_page') }}" class="active"><i class="lnr lnr-home"></i> <span>Tableau de bord</span></a></li>
+                        <li><a href="{{ path('client_offres') }}" class=""><i class="lnr lnr-list"></i> <span>Offres d’emploi/stages/ alternance</span></a></li>
+                        <li><a href="{{ path('client_actualite') }}" class=""><i class="lnr lnr-layers"></i> <span>Actualité de Prev’Risk</span></a></li>
+                        <li>
+                            <a href="#subPages" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>Profil</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+                            <div id="subPages" class="collapse ">
+                                <ul class="nav">
+                                    <li><a href="{{ path('client_profil') }}" class="">Mon Profil</a></li>
+                                    <li><a href="{{ path('client_mesOffre') }}" class="">Mes offres</a></li>
+                                    <li><a href="{{ path('client_mesActualite') }}" class="">Mes actualités</a></li>
+                                </ul>
+                            </div>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block body %}
+
+
+    <div class="main">
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <div class="container-fluid">
+                <!-- OVERVIEW -->
+                <br>
+                <br>
+
+                <header class="major">
+                    <h2>Sécurité</h2>
+                    <p></p>
+                </header>
+                <!-- END OVERVIEW -->
+
+
+
+
+                            <div class="panel">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title"></h3>
+                                </div>
+                                <div class="panel-body">
+                                    <p>La défense en profondeur, terme emprunté à une technique militaire destinée à retarder l'ennemi, consiste à exploiter plusieurs techniques de sécurité afin de réduire le risque lorsqu'un composant particulier de sécurité est compromis ou défaillant.
+                                        Le principe de défense en profondeur revient à sécuriser chaque sous-ensemble du système, et s'oppose à la vision d'une sécurisation du système uniquement en périphérie.
+                                        Il s'agit de sécuriser les données, le SGBD, le réseau, les applications web et l'authentification des utilisateurs</p>
+
+                                    <h4>Securité des données : </h4>
+                                    <p>
+                                        Lors de l'insertion des informations sensibles tel que les mots de passe , les emails
+                                        et numéros de téléphone dans la base de données , on a choisi de les chiffrer avant
+                                        l'opération de l’insertion se fait dans le but de protéger ces informations de toutes
+                                        attaques et piratage de la base de données. On a utilisé une méthode ​de cryptage​ pour le
+                                        chiffrage des données .</p>
+
+                                    <h4>Droit d'accès :</h4>
+                                    <p>Pour sécuriser l'accès sur les pages d’administrateurs et les moderateurs , et même
+                                        pour différencier si l’utilisateur est en mode connecté ou pas , on a utilisé la technique des ​ RÔLES , ​ cette technique permet de donner à chaque utilisateur un
+                                        rôle précis par exemple un utilisateur qui a un rôle administrateur aura l'accès aux
+                                        pages d’administrateur , un utilisateur qui a un rôle MEMBRE ...... .</p>
+                                </div>
+                            </div>
+
+
+                </div>
+
+                <br>
+                <br>
+
+
+
+
+            </div>
+        </div>
+        <!-- END MAIN CONTENT -->
+    </div>
+    <!-- END MAIN -->
+    <div class="clearfix"></div>
+    <footer>
+        <div class="container-fluid">
+            <p class="copyright">&copy; 2017 <a href="https://www.themeineed.com" target="_blank">Theme I Need</a>. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+
+
+
+{% endblock %}

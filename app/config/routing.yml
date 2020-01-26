@@ -1,0 +1,264 @@
+lic_sandbox:
+    resource: "@LicsandboxBundle/Resources/config/routing.yml"
+    prefix:   /sandbox
+
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation
+
+lic_home_homepage:
+    path:     /home
+    defaults: { _controller: AppBundle:Debut:index }
+
+lic_home_actu:
+    path:     /actualite
+    defaults: { _controller: AppBundle:Debut:actu }
+
+lic_home_offre:
+    path:     /offres
+    defaults: { _controller: AppBundle:Debut:offre }
+
+lic_home_propo:
+    path:     /apropos
+    defaults: { _controller: AppBundle:Debut:propo}
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+client_page:
+    path:     /client
+    defaults: { _controller: AppBundle:Users:client}
+
+admin_page:
+    path:     /admin
+    defaults: { _controller: AppBundle:Users:admin}
+
+login_ok:
+    path:     /login_ok
+    defaults: { _controller: AppBundle:Users:success}
+
+moderateur_page:
+    path:     /moderateur/acceuil
+    defaults: { _controller: AppBundle:Users:moderateur}
+
+fos_user_registration_register:
+    path: /register
+    controller: AppBundle\Controller\RegistrationController::registerAction
+
+forbidden:
+    path: /forbidden
+    defaults: { _controller: AppBundle:Default:forbidden}
+
+register2:
+    path: /register2/{username}
+    defaults: {_controller: AppBundle:Default:register2}
+
+project_inscrire:
+    path: /enregster
+    defaults: {_controller: AppBundle:Default:register}
+
+demande_addmission:
+    path: /admin/demandes_addmission
+    defaults: {_controller: AppBundle:Users:adminAdmission}
+
+accepter_user:
+    path: /admin/demandes_addmission/accept
+    defaults: {_controller: AppBundle:Users:accepterUser}
+
+refuser_user:
+    path: /admin/demandes_addmission/refus
+    defaults: {_controller: AppBundle:Users:refuserUser}
+
+demande_addmission_mod:
+    path: /moderateur/demandes_addmission
+    defaults: {_controller: AppBundle:Users:modAdmission}
+
+accepter_user_mod:
+    path: /moderateur/demandes_addmission/accept
+    defaults: {_controller: AppBundle:Users:modaccepterUser}
+
+refuser_user_mod:
+    path: /moderateur/demandes_addmission/refus
+    defaults: {_controller: AppBundle:Users:modrefuserUser}
+
+admin_gerer_utilisateur:
+    path: /admin/gererUser
+    defaults: {_controller: AppBundle:Users:gererUser}
+
+supp_user:
+    path: /admin/suppUser
+    defaults: {_controller: AppBundle:Users:suppUser}
+
+admin_gerer_admins:
+    path: /admin/gereradmins
+    defaults: {_controller: AppBundle:Users:gererAdmins}
+
+ajouter_admins:
+    path: /admin/gereradmins/ajouterAdmin
+    defaults: {_controller: AppBundle:Users:ajouterAdmins}
+
+admin_gerer_moderateur:
+    path: /admin/gereradmins/gerermoderateur
+    defaults: {_controller: AppBundle:Users:gerermoderateur}
+
+profil:
+    path: /admin/profil
+    defaults: {_controller: AppBundle:Users:profilAdmin}
+
+modifier_profil_admin:
+    path: /admin/modifierProfil
+    defaults: {_controller: AppBundle:Users:modifierAdmin}
+
+modifier_profil_moderateur:
+    path: /moderateur/modifierProfil
+    defaults: {_controller: AppBundle:Users:modifierMod}
+
+client_offres:
+    path: /client/offres
+    defaults: {_controller: AppBundle:Client:offres}
+
+client_actualite:
+    path: /client/actualite
+    defaults: {_controller: AppBundle:Client:actualite}
+
+client_profil:
+    path: /client/profil
+    defaults: {_controller: AppBundle:Client:profil}
+
+client_mesOffre:
+    path: /client/mesOffres
+    defaults: {_controller: AppBundle:Client:mesoffres}
+
+client_mesActualite:
+    path: /client/mesActualite
+    defaults: {_controller: AppBundle:Client:mesactuallite}
+
+special_offre:
+    path: /client/offres/specialOffre/{id}
+    defaults: {_controller: AppBundle:Client:offreSpecial}
+
+offre_spec:
+    path: /client/offres/postule_signal
+    defaults: {_controller: AppBundle:Client:offreSpecPosSign}
+    methods: [post]
+
+offre_spec2:
+    path: /client/offres/postule_signal2
+    defaults: {_controller: AppBundle:Client:offreSpecPosSign2}
+    methods: [post]
+
+special_annonce:
+    path: /client/annonces/specialAnnonce/{id}
+    defaults: {_controller: AppBundle:Client:annonceSpecial}
+
+annonce_commence:
+    path: /client/annances/commenter
+    defaults: {_controller: AppBundle:Client:annonceCommente}
+
+gerer_offre:
+    path: /client/mesOffres/supprimer
+    defaults: {_controller: AppBundle:Client:suppMesOffres}
+
+UP:
+    path: www.univ-poitiers.fr
+    defaults: {_controller: AppBundle:Debut:UP}
+
+contact:
+    path: contact
+    defaults: {_controller: AppBundle:Debut:contact}
+
+Iriaf:
+    path: iriaf
+    defaults: {_controller: AppBundle:Debut:iriaf}
+gerer_offre2:
+    path: /client/mesOffres/modifier
+    defaults: {_controller: AppBundle:Client:modMesOffres}
+
+ajouter_offre:
+    path: /client/mesOffres/ajouter
+    defaults: {_controller: AppBundle:Client:ajouterOffre}
+
+supprimer_actualite:
+    path: /client/mesActualite/supprimer
+    defaults: {_controller: AppBundle:Client:supprimerActualite}
+
+modfier_actuallite:
+    path: /client/mesActualites/modifier
+    defaults: {_controller: AppBundle:Client:modifierActualite}
+
+ajouter_actualite:
+    path: /client/mesActualite/ajouter
+    defaults: {_controller: AppBundle:Client:ajouterActualite}
+
+completer_profil_client:
+    path: /client/Monprofil/completer
+    defaults: {_controller: AppBundle:Client:completerProfil}
+supp_comp:
+    path: /client/monProfil/supprimer/competence
+    defaults: {_controller: AppBundle:Client:suppComp}
+
+mod_comp:
+    path: /client/monProfil/modfier/competence
+    defaults: {_controller: AppBundle:Client:modComp}
+
+supp_tel:
+    path: /client/monProfil/supprimer/telephone
+    defaults: {_controller: AppBundle:Client:suppTel}
+
+mod_tel:
+    path: /client/monProfil/modfier/telephone
+    defaults: {_controller: AppBundle:Client:modTel}
+
+supp_mail:
+    path: /client/monProfil/supprimer/mail
+    defaults: {_controller: AppBundle:Client:suppMail}
+
+mod_mail:
+    path: /client/monProfil/modfier/mail
+    defaults: {_controller: AppBundle:Client:modMail}
+
+supp_poste:
+    path: /client/monProfil/supprimer/poste
+    defaults: {_controller: AppBundle:Client:suppPoste}
+
+mod_poste:
+    path: /client/monProfil/modfier/poste
+    defaults: {_controller: AppBundle:Client:modPoste}
+
+mod_mdp:
+    path: /client/monProfil/modfier/mdp
+    defaults: {_controller: AppBundle:Client:modMdp}
+
+mod_nom:
+    path: /client/monProfil/modfier/nom
+    defaults: {_controller: AppBundle:Client:modNom}
+mod_prenom:
+    path: /client/monProfil/modfier/prenom
+    defaults: {_controller: AppBundle:Client:modPrenom}
+mod_pseudo:
+    path: /client/monProfil/modfier/pseudo
+    defaults: {_controller: AppBundle:Client:modPseudo}
+
+recherche_offre:
+  path: /client/offres/recherche
+  defaults: {_controller: AppBundle:Client:rechercheOffre}
+
+utilisation_base:
+    path: /client/utilisation
+    defaults: {_controller: AppBundle:Client:utilisation}
+
+securité:
+    path: /client/securite
+    defaults: {_controller: AppBundle:Client:securité}
+
+gerer_offre_admin:
+    path: /admin/offre_admin
+    defaults: {_controller: AppBundle:Users:gererOffre}
+
+rechrche_personne:
+    path: /client/recherchePesonne
+    defaults: {_controller: AppBundle:Client:recherchePersonne}
+
+enoive_mail:
+    path: /client/EnvoieMail
+    defaults: {_controller: AppBundle:Client:envoie}

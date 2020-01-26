@@ -1,0 +1,202 @@
+{% extends "base2.html.twig" %}
+
+{% block sidebar %}
+    <div id="wrapper">
+        <div id="sidebar-nav" class="sidebar">
+            <div class="sidebar-scroll">
+                <nav>
+                    <ul class="nav">
+                        <li><a href="{{ path('client_page') }}" class=""><i class="lnr lnr-home"></i> <span>Tableau de bord</span></a></li>
+                        <li><a href="{{ path('client_offres') }}" class="active"><i class="lnr lnr-list"></i> <span>Offres d’emploi/stages/ alternance</span></a></li>
+                        <li><a href="{{ path('client_actualite') }}" class=""><i class="lnr lnr-layers"></i> <span>Actualité de Prev’Risk</span></a></li>
+                        <li>
+                            <a href="#subPages" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span>Profil</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+                            <div id="subPages" class="collapse ">
+                                <ul class="nav">
+                                    <li><a href="{{ path('client_profil') }}" class="">Mon Profil</a></li>
+                                    <li><a href="{{ path('client_mesOffre') }}" class="">Mes offres</a></li>
+                                    <li><a href="{{ path('client_mesActualite') }}" class="">Mes actualités</a></li>
+                                </ul>
+                            </div>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block body %}
+
+
+    <div class="main">
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <div class="container-fluid">
+                <!-- OVERVIEW -->
+                <div class="panel panel-headline">
+
+                            <div class="panel-heading">
+                                <div class="row" id="row_postuler">
+                                    <div class="col-md-4">
+                                        <h3 class="panel-title">{{ offre.poste }}</h3>
+                                        <p class="panel-subtitle">{{ offre.lieux }} </p>
+                                    </div>
+
+                                    <div id="postuler">
+
+                                    </div>
+
+                                    <div id="signaler">
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-4">   <h4>Entreprise :</h4>  {{ offre.societe }}</div>
+                                    <div class="col-md-4"> <h4>Type : </h4> <p>{{ offre.type }}</p>  </div>
+                                    <div class="col-md-4"> <h4>Date début : </h4> <p>{{ offre.dateDeb|date("d/m/Y") }}</p></div>
+                                </div>
+                                <h4>Lieux :</h4> <p>{{ offre.lieux }}</p>
+                                <br>
+                                <br>
+                                <h4>Mission :</h4> <p>{{ offre.mission }}</p>
+                                <br>
+                                <h4>Profil recherché :</h4> <p>{{ offre.profil }}</p>
+                                <br>
+                                <br>
+                                <div class="row">
+                                    <div class="col-md-4"><h4>Publié par  :</h4> <p>{{ user.nom }} {{ user.prenom }}</p></div>
+                                    <div class="col-md-4"> <h4>Date de publication : </h4> <p> {{ offre.datePublication|date('d/m/Y') }}</p></div>
+
+                                </div>
+                                    <div class="row">
+                                        <div class="col-md-4"><h4>Nombre de vue :</h4> <p>{{ offre.nbvue }}</p></div>
+                                        <div class="col-md-4"><h4>Date d'expiration de l'offre :</h4> <p>{{ offre.dateExpiration|date('d/m/Y') }}</p></div>
+                                    </div>
+
+                            </div>
+
+                            <div class="panel-footer">
+
+                                    <div class="row">
+                                    <div class="col-md-6"><input type="submit" onclick="postule();" value="Postuler" id="buttonPostule" name="Postuler" class="btn btn-primary"></div>
+                                    <div class="col-md-6"><input type="submit"  onclick="signal();" value="Signaler" id="buttonSignal" name="Signaler" class="btn btn-warning"></div>
+                                    </div>
+
+                            </div>
+
+
+
+                </div>
+
+            </div>
+        </div>
+        <!-- END MAIN CONTENT -->
+    </div>
+    <!-- END MAIN -->
+    <div class="clearfix"></div>
+    <footer>
+        <div class="container-fluid">
+            <p class="copyright">&copy; 2017 <a href="https://www.themeineed.com" target="_blank">Theme I Need</a>. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script src="{{ asset('jquery-3.2.1.min.js') }}"></script>
+
+    <script>
+
+
+        function postule (){
+            $("#postuler").hide(0);
+
+            var id = {{ id|json_encode|raw }};
+
+
+            var div=document.createElement('div');
+
+            div.classList.add('col-md-4');
+
+            var h3=document.createElement('h3');
+            h3.setAttribute('class','panel-title');
+            h3.setAttribute('style','color:#7bb32e');
+            h3.innerHTML="Vous avez postulé à cet offre";
+
+            div.appendChild(h3);
+            document.getElementById("postuler").appendChild(div);
+
+            $.ajax({
+                url:'/client/offres/postule_signal',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "id": id
+                },
+                async: true,
+                success: function (data)
+                {
+                    console.log(data)
+
+
+                    $("#postuler").show(5);
+
+                    $("#buttonPostule").attr("disabled", true);
+                    $("#buttonPostule").attr("value", "vous avez postulé à cet offre");
+
+                }
+            })
+        }
+
+
+        function signal() {
+            $("#signaler").hide(0);
+
+            var id = {{ id|json_encode|raw }};
+
+
+            var div=document.createElement('div');
+
+            div.classList.add('col-md-4');
+
+            var h3=document.createElement('h3');
+            h3.setAttribute('class','panel-title');
+            h3.setAttribute('style','color:#a82400');
+            h3.innerHTML="Vous avez signalé cet offre";
+
+            div.appendChild(h3);
+            document.getElementById("signaler").appendChild(div);
+
+            $.ajax({
+                url:'/client/offres/postule_signal2',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "id": id
+                },
+                async: true,
+                success: function (data)
+                {
+                    console.log(data)
+
+
+                    $("#signaler").show(5);
+
+                    $("#buttonSignal").attr("disabled", true);
+                    $("#buttonSignal").attr("value", "vous avez signalé cet offre");
+
+                }
+            })
+
+        }
+
+
+    </script>
+
+
+
+
+{% endblock %}

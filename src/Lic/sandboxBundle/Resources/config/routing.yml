@@ -1,0 +1,21 @@
+licsandbox_homepage:
+    path:     /home
+    defaults: { _controller: LicsandboxBundle:Default:index }
+
+lic_home_actu:
+    path:     /actualite
+    defaults: { _controller: LicsandboxBundle:Default:actu }
+
+lic_home_offre:
+    path:     /offres
+    defaults: { _controller: LicsandboxBundle:Default:offre }
+
+lic_home_propo:
+    path:     /apropos
+    defaults: { _controller: LicsandboxBundle:Default:propo}
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+lic_home_login:
+    path:     /login

@@ -1,0 +1,432 @@
+{% extends "base2.html.twig" %}
+
+{% block sidebar %}
+
+
+    <div id="wrapper">
+        <div id="sidebar-nav" class="sidebar">
+            <div class="sidebar-scroll">
+                <nav>
+                    <ul class="nav">
+                        <li><a href="{{ path('client_page') }}" class=""><i class="lnr lnr-home"></i> <span>Tableau de bord</span></a></li>
+                        <li><a href="{{ path('client_offres') }}" class=""><i class="lnr lnr-list"></i> <span>Offres d’emploi/stages/ alternance</span></a></li>
+                        <li><a href="{{ path('client_actualite') }}" class=""><i class="lnr lnr-layers"></i> <span>Actualité de Prev’Risk</span></a></li>
+                        <li>
+                            <a href="#subPages" data-toggle="collapse" class="collapsed active"><i class="lnr lnr-file-empty"></i> <span>Profil</span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
+                            <div id="subPages" class="collapse ">
+                                <ul class="nav">
+                                    <li><a href="{{ path('client_profil') }}" class="">Mon Profil</a></li>
+                                    <li><a href="{{ path('client_mesOffre') }}" class="">Mes offres</a></li>
+                                    <li><a href="{{ path('client_mesActualite') }}" class="active">Mes actualités</a></li>
+                                </ul>
+                            </div>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block body %}
+<div class="main">
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        <div class="container-fluid">
+            <!-- OVERVIEW -->
+            <div class="panel panel-headline">
+                <div class="panel-heading">
+                    <div class="panel panel-headline">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Mes actualités</h3>
+                            <p class="panel-subtitle"></p>
+                        </div>
+                        <div class="panel-body">
+                            <h4>Explication</h4>
+                            <p>Dans cette rubrique vous trouverez les différents actualités que vous avez publié et vous serez capable de les gérer (supprimer , modifier ) . Vous pourrez aussi ajouter des nouvelles activités</p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Mes Actualités</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Titre</th>
+                            <th>Annonce</th>
+                            <th>Date publication</th>
+
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for u in annonces%}
+                            <tr id="tr{{ u.id }}">
+                                <td class="id">{{ u.id }}</td>
+                                <td class="titre">{{ u.titre }}</td>
+                                <td class="annonce">{{ u.annonce }}</td>
+                                <td class="datePub">{{ u.datePub |date("d/m/Y")}}</td>
+
+
+
+                                <td><button type="submit" class="btn btn-danger btn-sm btnSelect"  name="{{ u.id }}" value="supp"><i class="fa fa-trash-o"></i> Supprimer</button></td>
+                                <td><button type="submit" id="mod{{ u.id }}"  class="btn btn-primary btn-sm modifier"  name="{{ u.id }}" value="mod"><i class="fa fa-refresh"></i> Modifier</button></td>
+
+                                <input id="titre{{ u.id }}" type="hidden" value="{{ u.titre }}"/>
+                                <input id="annonce{{ u.id }}" type="hidden" value="{{ u.annonce }}"/>
+                                <input id="datePub{{ u.id }}" type="hidden" value="{{ u.datePub|date("d/m/Y") }}">
+                                <input id="dateExpiration{{ u.id }}" type="hidden" value="{{ u.dateExpiration |date("d/m/Y") }}"/>
+
+
+
+                                <div id="{{ u.id }}" class="des{{ u.id }}">
+
+                                </div>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="panel-footer">
+
+                    <!-- Trigger the modal with a button -->
+                    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" onclick="viderErreur();">Ajouter une annonce</button>
+
+                    <!-- Modal -->
+                    <div id="myModal" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Formlaire de l'ajout</h4>
+                                </div>
+                                <div class="modal-body">
+
+                                  <form id="myform" method="post">
+                                      <h4>Titre :</h4> <input type="text" id="titrev" name="titre" placeholder="Titre de l'annonce" required="required" class="form-control input-lg"/>  <div id="erreurTitre"> </div>
+                                      <br>
+                                      <br>
+                                      <h4>Annonce :</h4> <textarea class="form-control" name="annonce" id="annoncev" placeholder="Contenu de l'annonce" aria-placeholder="Contenu de l'annonce" rows="5"></textarea> <div id="erreurAnnonce"> </div>
+                                      <br>
+                                      <h4>Image de l'annonce :</h4> <input type="file" class="form-control input-lg custom-file-input" id="imagev" name="image"/> <div id="erreurPhoto"> </div>
+                                      <br>
+                                      <br> <div class="row">
+                                          <div class="col-md-6"><h4>Date d'expiration de l'annonce :</h4> <input type="date" id="dateExpr" name="dateExpr"
+                                                                                                                 required="required" class="form-control input-lg"/> <div id="erreurDateExpr"> </div> </div>
+                                      </div>
+
+
+                                  </form>
+
+                                        <input type="hidden" value="{{"now"|date("m/d/Y")  }}" id="datepub"/>
+
+                                        <br> <br> <div class="panel-footer"> </div>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <div class="row">
+                                            <div class="col-md-6"><input type="submit" onclick="ajouter();" value="Valider" id="buttonValider" name="valider" class="btn btn-primary valider"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+
+
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+    <div class="clearfix"></div>
+    <footer>
+        <div class="container-fluid">
+            <p class="copyright">&copy; 2017 <a href="https://www.themeineed.com" target="_blank">Theme I Need</a>. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+
+    <script src="{{ asset('jquery-3.2.1.min.js') }}"></script>
+
+    <script>
+
+        $(document).ready(function() {
+
+            $('#myModal').on('hidden.bs.modal', function () {
+                location.reload();
+            });
+
+        });
+
+
+        $(document).ready(function(){
+            // code to read selected table row cell data (values).
+            $(".btnSelect").on('click',function(){
+
+                var currentRow=$(this).closest("tr");
+                var id=currentRow.find("td:eq(0)").html();
+
+
+                $.ajax({
+                    url:'/client/mesActualite/supprimer',
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        "id": id
+                    },
+                    async: true,
+                    success: function (data)
+                    {
+                        console.log(data);
+
+                        $("table tbody").find('button[name='+id+']').each(function(){
+
+                            $(this).parents("tr").hide(1000);
+
+                            $("#" + id).hide(1000);
+                            $("#" + id).empty();
+
+                        });
+
+
+                    }
+                })
+
+
+            });
+        });
+
+
+        $(document).ready(function(){
+
+
+            // code to read selected table row cell data (values).
+            $(".modifier").on('click',function(){
+
+
+                var currentRow1=$(this).parent().parent();
+
+                console.log(currentRow1);
+                var id1=currentRow1.find("td:eq(0)").html();
+                var titre = $("#titre"+id1).val();
+                var annonce = $("#annonce"+id1).val();
+                var datepub = $("#datePub"+id1).val();
+                var dateexpr = $("#dateExpiration"+id1).val();
+
+                $("#mod"+id1).attr("disabled", true);
+
+                $("#"+id1).append(
+                    '    <h4>Titre :</h4> <input type="text" id="titrev'+id1+'" name="titre"\n' +
+                    '                                               value="'+titre+'" required="required" class="form-control input-lg"/>  <div id="erreurtitre'+id1+'"> </div>  \n' +
+                    '                                    \n' +
+                    '                                <br>\n' +
+                    '                                <br>\n' +
+                    '   ' +
+                    '                             ' +
+                    '   <h4>Annonce :</h4> <textarea class="form-control" name="annonce" id="annoncev'+id1+'" rows="5">'+annonce+'</textarea> <div id="erreurAnnonce'+id1+'"> </div>\n' +
+                    '                                <br>\n' +
+                    '                                ' +
+                    '                                <br>\n' +
+                    '                                <br> <div class="row">\n' +
+                    '                                    <div class="col-md-4"><h4>Publié par  :</h4> <p>Vous</p></div>\n' +
+                    '                                    <div class="col-md-4"> <h4>Date de publication : </h4> <p id="datepub'+id1+'">'+datepub+'</p></div>\n' +
+                    '\n' +
+                    '                                </div>\n' +
+                    '                                    <div class="row">\n' +
+                    '                                       \n' +
+                    '                                        <div class="col-md-4"><h4>Date d\'expiration de l\'offre :</h4> <p>'+dateexpr+'</p></div>\n' +
+                    '                                    </div></div> <br> <br> <div class="panel-footer"> <div class="row">\n' +
+                    '                                    <div class="col-md-6"><input type="submit" onclick="valider('+id1+');" value="Valider" id="buttonValider" name="valider" class="btn btn-primary valider"></div> <div class="col-md-6"><input type="submit" onclick="annuler('+id1+');" value="Annuler" id="buttonValider" name="annuler" class="btn btn-default annuler"></div>\n' +
+
+                    '                                    </div></div>');
+
+
+
+                $("#"+id1).show(5);
+
+
+            });
+
+
+        });
+        function valider(id1 ){
+
+            $("#erreurtitre" + id1).empty();
+            $("#erreurAnnonce"+id1).empty();
+
+
+            var titre = $("#titrev"+id1).val();
+            var annonce = $("#annoncev"+id1).val();
+            var datePub = $("#datepub"+id1).text();
+
+            if (titre =="" || annonce=="" ){
+
+                if (titre == "") {
+                    $("#erreurtitre" + id1).append('<p style="color: #8f1f00"> Vous devez remplir ce champ : Titre.</p>');
+                }
+
+                if (annonce== "") {
+                    $("#erreurAnnonce"+id1).append('<p style="color: #8f1f00"> Vous devez remplir ce champ : Annonce .</p>');
+                }
+
+
+
+
+            }else {
+
+                $.ajax({
+                    url: '/client/mesActualites/modifier',
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        "id": id1,
+                        "titre": titre,
+                        "annonce": annonce,
+
+                    },
+                    async: true,
+                    success: function (data) {
+                        console.log(data);
+                        $("#tr" + id1).find("td:eq(1)").html(titre);
+                        $("#tr" + id1).find("td:eq(2)").html(annonce);
+                        $("#tr" + id1).find("td:eq(3)").html(datePub);
+                        $("#tr" + id1).hide(500, function () {
+                            $("#tr" + id1).attr('class', 'alert alert-success');
+                            $("#tr" + id1).show(500);
+                        });
+
+                        $("#mod" + id1).attr("disabled", false);
+                        $("#" + id1).hide(1000);
+                        $("#" + id1).empty();
+                    }
+                });
+
+            }
+
+
+        }
+
+
+        function annuler(id1) {
+            $("#mod" + id1).attr("disabled", false);
+            $("#" + id1).hide(1000);
+            $("#" + id1).empty();
+        }
+
+        function ajouter() {
+
+            var form = document.getElementById("myform");
+
+            $("#erreurTitre").empty();
+            $("#erreurAnnonce").empty();
+            $("#erreurPhoto").empty();
+            $("#erreurDateExpr").empty();
+
+            var titre = $("#titrev").val();
+            var annonce = $("#annoncev").val();
+            var photo = $("#imagev").val();
+
+            var dateExpr = $("#dateExpr").val();
+            var datePub = $("#datepub").val();
+
+            var myFile = $('#imagev').prop('files')[0];
+
+             console.log(myFile);
+
+            if (titre =="" || annonce=="" || photo=="" || dateExpr == "" ){
+
+                if (titre == "") {
+                    $("#erreurTitre").append('<p style="color: #8f1f00"> Vous devez remplir ce champ : titre.</p>');
+                }
+
+                if (annonce== "") {
+                    $("#erreurAnnonce").append('<p style="color: #8f1f00"> Vous devez remplir ce champ : annonce .</p>');
+                }
+
+                if (photo == "") {
+                    $("#erreurPhoto").append('<p style="color: #8f1f00"> Vous devez remplir ce champ : image .</p>');
+                }
+
+                if (dateExpr == "") {
+                    $("#erreurDateExpr").append('<p style="color: #8f1f00"> Vous devez remplir ce champ : date d\'expiration .</p>');
+                }
+
+
+
+            }else {
+
+                $.ajax({
+                    url: '/client/mesActualite/ajouter',
+                    type: "POST",
+                    contentType:false,
+                    processData:false,
+                    cache:false,
+                    dataType: "json",
+                    data: new FormData(form),
+                    async: true,
+                    success: function (data) {
+                        console.log(data);
+
+                        $("#erreurTitre").empty();
+                        $("#erreurAnnonce").empty();
+                        $("#erreurPhoto").empty();
+                        $("#erreurDateExpr").empty();
+
+
+                        var markup = '<tr id="tr'+data.id+'"><td class="id" >'+data.id+'</td><td class="titre" >'+titre+'</td><td class="annonce">' + annonce + '</td><td class="date">' + dateExpr + '</td>\n' +
+                            '                    <td><button type="submit" class="btn btn-danger btn-sm btnSelect"  name="'+data.id+'" value="supp"><i class="fa fa-trash-o"></i> Supprimer</button></td>\n' +
+                            '                        <td><button type="submit" id="mod'+data.id+'"  class="btn btn-primary btn-sm modifier" name="'+data.id+'" value="mod"><i class="fa fa-refresh"></i> Modifier</button></td>' +
+                            ' <input id="titre '+data.id+'" type="hidden" value="'+titre+'"/>\n' +
+                            '                                        <input id="annonce'+data.id+'" type="hidden" value="'+annonce+'"/>\n' +
+                            '                                        <input id="datePub'+data.id+'" type="hidden" value="'+datePub+'">\n' +
+                            '                                        <input id="dateExpiration'+data.id+'" type="hidden" value="'+dateExpr+'"/>\n' +
+                            '                                 <div id="'+data.id+'" class="des'+data.id+'">\n' +
+                            '\n' +
+                            '                                 </div></tr>';
+
+                        $("table tbody").append(markup);
+
+                        $('#myModal').modal('toggle');
+                    }
+                });
+
+            }
+
+        }
+
+        function viderErreur() {
+            $("#erreurTitre").empty();
+            $("#erreurAnnonce").empty();
+            $("#erreurPhoto").empty();
+            $("#erreurDateExpr").empty();
+        }
+
+
+
+    </script>
+{% endblock %}
+
+
